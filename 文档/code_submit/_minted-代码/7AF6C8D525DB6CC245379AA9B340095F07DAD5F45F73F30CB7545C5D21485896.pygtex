@@ -1,0 +1,603 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{o}{\PYGZlt{}}\PYG{err}{?}\PYG{n}{xml} \PYG{n}{version}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}1.0\PYGZdq{}} \PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}UTF\PYGZhy{}8\PYGZdq{}}\PYG{err}{?}\PYG{o}{\PYGZgt{}}
+\PYG{o}{\PYGZlt{}}\PYG{n}{ui} \PYG{n}{version}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}4.0\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+ \PYG{o}{\PYGZlt{}}\PYG{n}{class}\PYG{o}{\PYGZgt{}}\PYG{n}{Form}\PYG{o}{\PYGZlt{}/}\PYG{n}{class}\PYG{o}{\PYGZgt{}}
+ \PYG{o}{\PYGZlt{}}\PYG{n}{widget} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QWidget\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}Form\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+  \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}geometry\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+   \PYG{o}{\PYGZlt{}}\PYG{n}{rect}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}}\PYG{n}{x}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{x}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}}\PYG{n}{y}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{y}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{400}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{310}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+   \PYG{o}{\PYGZlt{}/}\PYG{n}{rect}\PYG{o}{\PYGZgt{}}
+  \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+  \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}windowTitle\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+   \PYG{o}{\PYGZlt{}}\PYG{n}{string}\PYG{o}{\PYGZgt{}}\PYG{n}{Form}\PYG{o}{\PYGZlt{}/}\PYG{n}{string}\PYG{o}{\PYGZgt{}}
+  \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+  \PYG{o}{\PYGZlt{}}\PYG{n}{widget} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QTabWidget\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}tabWidget\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+   \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}geometry\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}}\PYG{n}{rect}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}}\PYG{n}{x}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{10}\PYG{o}{\PYGZlt{}/}\PYG{n}{x}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}}\PYG{n}{y}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{10}\PYG{o}{\PYGZlt{}/}\PYG{n}{y}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{381}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{261}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}/}\PYG{n}{rect}\PYG{o}{\PYGZgt{}}
+   \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+   \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}currentIndex\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}}\PYG{n}{number}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{number}\PYG{o}{\PYGZgt{}}
+   \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+   \PYG{o}{\PYGZlt{}}\PYG{n}{widget} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QWidget\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}tab\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}}\PYG{n}{attribute} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}title\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}}\PYG{n}{string}\PYG{o}{\PYGZgt{}}\PYG{n}{行为}\PYG{o}{\PYGZlt{}/}\PYG{n}{string}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}/}\PYG{n}{attribute}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}}\PYG{n}{widget} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QWidget\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}layoutWidget\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}geometry\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}}\PYG{n}{rect}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{x}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{x}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{y}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{10}\PYG{o}{\PYGZlt{}/}\PYG{n}{y}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{371}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{211}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}/}\PYG{n}{rect}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}}\PYG{n}{layout} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QHBoxLayout\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalLayout\PYGZus{}2\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{spacer} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalSpacer\PYGZus{}10\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}orientation\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{Horizontal}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeHint\PYGZdq{}} \PYG{n}{stdset}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}0\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{40}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{20}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}/}\PYG{n}{spacer}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{layout} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QVBoxLayout\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}verticalLayout\PYGZus{}2\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{layout} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QVBoxLayout\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}verticalLayout\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{layout} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QHBoxLayout\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalLayout\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}}\PYG{n}{spacer} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalSpacer\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}orientation\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{Horizontal}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeType\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{QSizePolicy}\PYG{p}{::}\PYG{n}{Maximum}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeHint\PYGZdq{}} \PYG{n}{stdset}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}0\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{30}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{20}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}/}\PYG{n}{spacer}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}}\PYG{n}{widget} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QComboBox\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}tab1\PYGZus{}combobox\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizePolicy\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{sizepolicy} \PYG{n}{hsizetype}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}MinimumExpanding\PYGZdq{}} \PYG{n}{vsizetype}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}Fixed\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{horstretch}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{horstretch}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{verstretch}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{verstretch}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}/}\PYG{n}{sizepolicy}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}/}\PYG{n}{widget}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}}\PYG{n}{spacer} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalSpacer\PYGZus{}2\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}orientation\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{Horizontal}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeType\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{QSizePolicy}\PYG{p}{::}\PYG{n}{Maximum}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeHint\PYGZdq{}} \PYG{n}{stdset}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}0\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{30}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{20}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}/}\PYG{n}{spacer}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}/}\PYG{n}{layout}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{spacer} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalSpacer\PYGZus{}9\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}orientation\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{Horizontal}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeHint\PYGZdq{}} \PYG{n}{stdset}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}0\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{40}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{20}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}/}\PYG{n}{spacer}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}/}\PYG{n}{layout}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{widget} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QLabel\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}tab1\PYGZus{}label\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizePolicy\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{sizepolicy} \PYG{n}{hsizetype}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}Ignored\PYGZdq{}} \PYG{n}{vsizetype}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}Fixed\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{horstretch}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{horstretch}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{verstretch}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{verstretch}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}/}\PYG{n}{sizepolicy}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}minimumSize\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{256}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{144}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}maximumSize\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{256}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{144}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}text\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{string}\PYG{o}{\PYGZgt{}}\PYG{n}{TextLabel}\PYG{o}{\PYGZlt{}/}\PYG{n}{string}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}alignment\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n+nb}{set}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{AlignCenter}\PYG{o}{\PYGZlt{}/}\PYG{n+nb}{set}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}/}\PYG{n}{widget}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}/}\PYG{n}{layout}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{spacer} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalSpacer\PYGZus{}11\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}orientation\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{Horizontal}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeHint\PYGZdq{}} \PYG{n}{stdset}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}0\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{40}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{20}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}/}\PYG{n}{spacer}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}/}\PYG{n}{layout}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}/}\PYG{n}{widget}\PYG{o}{\PYGZgt{}}
+   \PYG{o}{\PYGZlt{}/}\PYG{n}{widget}\PYG{o}{\PYGZgt{}}
+   \PYG{o}{\PYGZlt{}}\PYG{n}{widget} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QWidget\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}tab\PYGZus{}2\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}}\PYG{n}{attribute} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}title\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}}\PYG{n}{string}\PYG{o}{\PYGZgt{}}\PYG{n}{面部}\PYG{o}{\PYGZlt{}/}\PYG{n}{string}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}/}\PYG{n}{attribute}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}}\PYG{n}{widget} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QWidget\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}layoutWidget\PYGZus{}2\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}geometry\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}}\PYG{n}{rect}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{x}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{x}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{y}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{10}\PYG{o}{\PYGZlt{}/}\PYG{n}{y}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{371}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{211}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}/}\PYG{n}{rect}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}}\PYG{n}{layout} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QHBoxLayout\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalLayout\PYGZus{}7\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{spacer} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalSpacer\PYGZus{}15\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}orientation\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{Horizontal}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeHint\PYGZdq{}} \PYG{n}{stdset}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}0\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{40}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{20}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}/}\PYG{n}{spacer}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{layout} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QVBoxLayout\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}verticalLayout\PYGZus{}5\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{layout} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QVBoxLayout\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}verticalLayout\PYGZus{}6\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{layout} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QHBoxLayout\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalLayout\PYGZus{}8\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}}\PYG{n}{spacer} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalSpacer\PYGZus{}16\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}orientation\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{Horizontal}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeType\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{QSizePolicy}\PYG{p}{::}\PYG{n}{Maximum}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeHint\PYGZdq{}} \PYG{n}{stdset}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}0\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{30}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{20}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}/}\PYG{n}{spacer}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}}\PYG{n}{widget} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QComboBox\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}tab1\PYGZus{}combobox\PYGZus{}3\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizePolicy\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{sizepolicy} \PYG{n}{hsizetype}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}MinimumExpanding\PYGZdq{}} \PYG{n}{vsizetype}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}Fixed\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{horstretch}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{horstretch}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{verstretch}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{verstretch}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}/}\PYG{n}{sizepolicy}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}/}\PYG{n}{widget}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}}\PYG{n}{spacer} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalSpacer\PYGZus{}17\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}orientation\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{Horizontal}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeType\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{QSizePolicy}\PYG{p}{::}\PYG{n}{Maximum}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeHint\PYGZdq{}} \PYG{n}{stdset}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}0\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{30}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{20}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}/}\PYG{n}{spacer}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}/}\PYG{n}{layout}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{spacer} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalSpacer\PYGZus{}18\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}orientation\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{Horizontal}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeHint\PYGZdq{}} \PYG{n}{stdset}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}0\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{40}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{20}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}/}\PYG{n}{spacer}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}/}\PYG{n}{layout}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{widget} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QLabel\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}tab1\PYGZus{}label\PYGZus{}3\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizePolicy\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{sizepolicy} \PYG{n}{hsizetype}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}Ignored\PYGZdq{}} \PYG{n}{vsizetype}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}Fixed\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{horstretch}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{horstretch}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{verstretch}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{verstretch}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}/}\PYG{n}{sizepolicy}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}minimumSize\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{256}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{144}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}maximumSize\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{256}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{144}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}text\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{string}\PYG{o}{\PYGZgt{}}\PYG{n}{TextLabel}\PYG{o}{\PYGZlt{}/}\PYG{n}{string}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}alignment\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n+nb}{set}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{AlignCenter}\PYG{o}{\PYGZlt{}/}\PYG{n+nb}{set}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}/}\PYG{n}{widget}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}/}\PYG{n}{layout}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{spacer} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalSpacer\PYGZus{}19\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}orientation\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{Horizontal}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeHint\PYGZdq{}} \PYG{n}{stdset}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}0\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{40}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{20}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}/}\PYG{n}{spacer}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}/}\PYG{n}{layout}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}/}\PYG{n}{widget}\PYG{o}{\PYGZgt{}}
+   \PYG{o}{\PYGZlt{}/}\PYG{n}{widget}\PYG{o}{\PYGZgt{}}
+   \PYG{o}{\PYGZlt{}}\PYG{n}{widget} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QWidget\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}tab\PYGZus{}3\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}}\PYG{n}{attribute} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}title\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}}\PYG{n}{string}\PYG{o}{\PYGZgt{}}\PYG{n}{眼睛}\PYG{o}{\PYGZlt{}/}\PYG{n}{string}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}/}\PYG{n}{attribute}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}}\PYG{n}{widget} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QWidget\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}layoutWidget\PYGZus{}3\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}geometry\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}}\PYG{n}{rect}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{x}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{x}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{y}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{10}\PYG{o}{\PYGZlt{}/}\PYG{n}{y}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{371}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{211}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}/}\PYG{n}{rect}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}}\PYG{n}{layout} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QHBoxLayout\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalLayout\PYGZus{}4\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{spacer} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalSpacer\PYGZus{}20\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}orientation\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{Horizontal}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeHint\PYGZdq{}} \PYG{n}{stdset}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}0\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{40}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{20}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}/}\PYG{n}{spacer}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{layout} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QVBoxLayout\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}verticalLayout\PYGZus{}7\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{layout} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QVBoxLayout\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}verticalLayout\PYGZus{}8\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{layout} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QHBoxLayout\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalLayout\PYGZus{}9\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}}\PYG{n}{spacer} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalSpacer\PYGZus{}5\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}orientation\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{Horizontal}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeType\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{QSizePolicy}\PYG{p}{::}\PYG{n}{Maximum}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeHint\PYGZdq{}} \PYG{n}{stdset}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}0\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{30}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{20}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}/}\PYG{n}{spacer}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}}\PYG{n}{widget} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QComboBox\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}tab1\PYGZus{}combobox\PYGZus{}4\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizePolicy\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{sizepolicy} \PYG{n}{hsizetype}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}MinimumExpanding\PYGZdq{}} \PYG{n}{vsizetype}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}Fixed\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{horstretch}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{horstretch}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{verstretch}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{verstretch}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}/}\PYG{n}{sizepolicy}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}/}\PYG{n}{widget}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}}\PYG{n}{spacer} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalSpacer\PYGZus{}6\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}orientation\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{Horizontal}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeType\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{QSizePolicy}\PYG{p}{::}\PYG{n}{Maximum}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeHint\PYGZdq{}} \PYG{n}{stdset}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}0\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{30}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{20}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}/}\PYG{n}{spacer}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}/}\PYG{n}{layout}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{spacer} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalSpacer\PYGZus{}21\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}orientation\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{Horizontal}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeHint\PYGZdq{}} \PYG{n}{stdset}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}0\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{40}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{20}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}/}\PYG{n}{spacer}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}/}\PYG{n}{layout}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{widget} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QLabel\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}tab1\PYGZus{}label\PYGZus{}4\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizePolicy\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{sizepolicy} \PYG{n}{hsizetype}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}Ignored\PYGZdq{}} \PYG{n}{vsizetype}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}Fixed\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{horstretch}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{horstretch}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{verstretch}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{verstretch}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}/}\PYG{n}{sizepolicy}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}minimumSize\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{256}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{144}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}maximumSize\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{256}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{144}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}text\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{string}\PYG{o}{\PYGZgt{}}\PYG{n}{TextLabel}\PYG{o}{\PYGZlt{}/}\PYG{n}{string}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}alignment\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n+nb}{set}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{AlignCenter}\PYG{o}{\PYGZlt{}/}\PYG{n+nb}{set}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}/}\PYG{n}{widget}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}/}\PYG{n}{layout}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{spacer} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalSpacer\PYGZus{}22\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}orientation\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{Horizontal}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeHint\PYGZdq{}} \PYG{n}{stdset}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}0\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{40}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{20}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}/}\PYG{n}{spacer}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}/}\PYG{n}{layout}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}/}\PYG{n}{widget}\PYG{o}{\PYGZgt{}}
+   \PYG{o}{\PYGZlt{}/}\PYG{n}{widget}\PYG{o}{\PYGZgt{}}
+   \PYG{o}{\PYGZlt{}}\PYG{n}{widget} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QWidget\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}tab\PYGZus{}4\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}}\PYG{n}{attribute} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}title\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}}\PYG{n}{string}\PYG{o}{\PYGZgt{}}\PYG{n}{麦克风}\PYG{o}{\PYGZlt{}/}\PYG{n}{string}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}/}\PYG{n}{attribute}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}}\PYG{n}{widget} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QWidget\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}layoutWidget\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}geometry\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}}\PYG{n}{rect}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{x}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{x}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{y}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{10}\PYG{o}{\PYGZlt{}/}\PYG{n}{y}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{371}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{211}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}/}\PYG{n}{rect}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}}\PYG{n}{layout} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QHBoxLayout\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalLayout\PYGZus{}13\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{spacer} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalSpacer\PYGZus{}31\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}orientation\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{Horizontal}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeHint\PYGZdq{}} \PYG{n}{stdset}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}0\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{40}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{40}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}/}\PYG{n}{spacer}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{layout} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QVBoxLayout\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}verticalLayout\PYGZus{}13\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{layout} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QVBoxLayout\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}verticalLayout\PYGZus{}14\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{layout} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QHBoxLayout\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalLayout\PYGZus{}14\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}}\PYG{n}{spacer} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalSpacer\PYGZus{}32\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}orientation\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{Horizontal}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeType\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{QSizePolicy}\PYG{p}{::}\PYG{n}{Maximum}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeHint\PYGZdq{}} \PYG{n}{stdset}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}0\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{31}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{20}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}/}\PYG{n}{spacer}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}}\PYG{n}{widget} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QComboBox\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}tab1\PYGZus{}combobox\PYGZus{}7\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizePolicy\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{sizepolicy} \PYG{n}{hsizetype}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}MinimumExpanding\PYGZdq{}} \PYG{n}{vsizetype}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}Fixed\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{horstretch}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{horstretch}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{verstretch}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{verstretch}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}/}\PYG{n}{sizepolicy}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}minimumSize\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{160}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}/}\PYG{n}{widget}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}}\PYG{n}{spacer} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalSpacer\PYGZus{}33\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}orientation\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{Horizontal}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeType\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{QSizePolicy}\PYG{p}{::}\PYG{n}{Maximum}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeHint\PYGZdq{}} \PYG{n}{stdset}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}0\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{31}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+                \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{20}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+               \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}/}\PYG{n}{spacer}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}/}\PYG{n}{layout}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{spacer} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalSpacer\PYGZus{}34\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}orientation\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{Horizontal}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeType\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{QSizePolicy}\PYG{p}{::}\PYG{n}{Minimum}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeHint\PYGZdq{}} \PYG{n}{stdset}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}0\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{256}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+              \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{55}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+             \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}/}\PYG{n}{spacer}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}/}\PYG{n}{layout}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{widget} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QProgressBar\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}progressBar\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}value\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{number}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{o}{\PYGZlt{}/}\PYG{n}{number}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}textVisible\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n+nb}{bool}\PYG{o}{\PYGZgt{}}\PYG{n}{false}\PYG{o}{\PYGZlt{}/}\PYG{n+nb}{bool}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}/}\PYG{n}{widget}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{spacer} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalSpacer\PYGZus{}36\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}orientation\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{Horizontal}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeHint\PYGZdq{}} \PYG{n}{stdset}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}0\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{40}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+            \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{60}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+           \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}/}\PYG{n}{spacer}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}/}\PYG{n}{layout}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}}\PYG{n}{spacer} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}horizontalSpacer\PYGZus{}35\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}orientation\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}\PYG{n}{Qt}\PYG{p}{::}\PYG{n}{Horizontal}\PYG{o}{\PYGZlt{}/}\PYG{n}{enum}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}sizeHint\PYGZdq{}} \PYG{n}{stdset}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}0\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{40}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+          \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{20}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+         \PYG{o}{\PYGZlt{}/}\PYG{n}{size}\PYG{o}{\PYGZgt{}}
+        \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+       \PYG{o}{\PYGZlt{}/}\PYG{n}{spacer}\PYG{o}{\PYGZgt{}}
+      \PYG{o}{\PYGZlt{}/}\PYG{n}{item}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}/}\PYG{n}{layout}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}/}\PYG{n}{widget}\PYG{o}{\PYGZgt{}}
+   \PYG{o}{\PYGZlt{}/}\PYG{n}{widget}\PYG{o}{\PYGZgt{}}
+  \PYG{o}{\PYGZlt{}/}\PYG{n}{widget}\PYG{o}{\PYGZgt{}}
+  \PYG{o}{\PYGZlt{}}\PYG{n}{widget} \PYG{n}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}QPushButton\PYGZdq{}} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}OK\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+   \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}geometry\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}}\PYG{n}{rect}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}}\PYG{n}{x}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{260}\PYG{o}{\PYGZlt{}/}\PYG{n}{x}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}}\PYG{n}{y}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{280}\PYG{o}{\PYGZlt{}/}\PYG{n}{y}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}}\PYG{n}{width}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{111}\PYG{o}{\PYGZlt{}/}\PYG{n}{width}\PYG{o}{\PYGZgt{}}
+     \PYG{o}{\PYGZlt{}}\PYG{n}{height}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{23}\PYG{o}{\PYGZlt{}/}\PYG{n}{height}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}/}\PYG{n}{rect}\PYG{o}{\PYGZgt{}}
+   \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+   \PYG{o}{\PYGZlt{}}\PYG{n+nb}{property} \PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}text\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+    \PYG{o}{\PYGZlt{}}\PYG{n}{string}\PYG{o}{\PYGZgt{}}\PYG{n}{确认}\PYG{o}{\PYGZlt{}/}\PYG{n}{string}\PYG{o}{\PYGZgt{}}
+   \PYG{o}{\PYGZlt{}/}\PYG{n+nb}{property}\PYG{o}{\PYGZgt{}}
+  \PYG{o}{\PYGZlt{}/}\PYG{n}{widget}\PYG{o}{\PYGZgt{}}
+ \PYG{o}{\PYGZlt{}/}\PYG{n}{widget}\PYG{o}{\PYGZgt{}}
+ \PYG{o}{\PYGZlt{}}\PYG{n}{resources}\PYG{o}{/\PYGZgt{}}
+ \PYG{o}{\PYGZlt{}}\PYG{n}{connections}\PYG{o}{/\PYGZgt{}}
+\PYG{o}{\PYGZlt{}/}\PYG{n}{ui}\PYG{o}{\PYGZgt{}}
+\end{Verbatim}

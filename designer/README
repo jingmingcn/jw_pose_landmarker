@@ -1,0 +1,7 @@
+
+使用designer文件下的ui文件，然后使用命令转成py文件，再复制到CvPyGui文件夹的ui文件夹下。
+
+```
+pyuic5 -x gui.ui -o gui.py
+pyuic5 -x child_setting.ui -o child_setting.py
+```

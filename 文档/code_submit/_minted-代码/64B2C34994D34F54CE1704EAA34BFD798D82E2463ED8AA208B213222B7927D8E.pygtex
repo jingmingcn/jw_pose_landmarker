@@ -1,0 +1,125 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k+kn}{from} \PYG{n+nn}{PyQt5.QtCore} \PYG{k+kn}{import} \PYG{n}{Qt}
+\PYG{k+kn}{from} \PYG{n+nn}{PyQt5.QtWidgets} \PYG{k+kn}{import} \PYG{p}{(}\PYG{n}{QWidget}\PYG{p}{,} \PYG{n}{QLabel}\PYG{p}{,} \PYG{n}{QHBoxLayout}\PYG{p}{,}
+                             \PYG{n}{QPushButton}\PYG{p}{,} \PYG{n}{QSlider}\PYG{p}{)}
+\PYG{k+kn}{import} \PYG{n+nn}{cv2}
+\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k}{as} \PYG{n+nn}{np}
+\PYG{k}{class} \PYG{n+nc}{Filter}\PYG{p}{(}\PYG{n}{QWidget}\PYG{p}{):}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Common base class for all filters\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{n}{defaultK} \PYG{o}{=} \PYG{l+m+mi}{3}
+    \PYG{n}{filterCount} \PYG{o}{=} \PYG{l+m+mi}{0}
+    \PYG{k}{def} \PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{name}\PYG{p}{,} \PYG{n}{minValue}\PYG{p}{,} \PYG{n}{maxValue}\PYG{p}{,} \PYG{n}{init}\PYG{p}{,} \PYG{n}{num\PYGZus{}of\PYGZus{}k}\PYG{p}{,} \PYG{n}{parent}\PYG{o}{=}\PYG{k+kc}{None}\PYG{p}{):}
+        \PYG{n+nb}{super}\PYG{p}{()}\PYG{o}{.}\PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{filter\PYGZus{}number} \PYG{o}{=} \PYG{n}{Filter}\PYG{o}{.}\PYG{n}{filterCount}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{name} \PYG{o}{=} \PYG{n}{name}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{num\PYGZus{}of\PYGZus{}k} \PYG{o}{=} \PYG{n}{num\PYGZus{}of\PYGZus{}k}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{k} \PYG{o}{=} \PYG{p}{[}\PYG{n}{init}\PYG{p}{]}
+        \PYG{c+c1}{\PYGZsh{} Increase the number of filters created}
+        \PYG{n}{Filter}\PYG{o}{.}\PYG{n}{filterCount} \PYG{o}{+=} \PYG{l+m+mi}{1}
+        \PYG{c+c1}{\PYGZsh{} Set maximum height}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{setMaximumHeight}\PYG{p}{(}\PYG{l+m+mi}{65}\PYG{p}{)}
+        \PYG{c+c1}{\PYGZsh{} Variable for the slider/label layout}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{lay} \PYG{o}{=} \PYG{n}{QHBoxLayout}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{)}
+        \PYG{c+c1}{\PYGZsh{} Variable for the constant of the OpenCV filter}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{k}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{defaultK}
+        \PYG{c+c1}{\PYGZsh{} Label for the slider}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{k\PYGZus{}lbl} \PYG{o}{=} \PYG{p}{[}\PYG{n}{QLabel}\PYG{p}{(}\PYG{n+nb}{str}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{k}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]))]}
+        \PYG{c+c1}{\PYGZsh{} Name for the slider}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{name\PYGZus{}lbl} \PYG{o}{=} \PYG{n}{QLabel}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{name} \PYG{o}{+} \PYG{l+s+s1}{\PYGZsq{}: \PYGZsq{}}\PYG{p}{)}
+        \PYG{c+c1}{\PYGZsh{} Set default parameters}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{setParameters}\PYG{p}{(}\PYG{n}{minValue}\PYG{p}{,} \PYG{n}{maxValue}\PYG{p}{)}
+        \PYG{c+c1}{\PYGZsh{} Create delete button}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{delete\PYGZus{}filter\PYGZus{}btn} \PYG{o}{=} \PYG{n}{QPushButton}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}X\PYGZsq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{delete\PYGZus{}filter\PYGZus{}btn}\PYG{o}{.}\PYG{n}{clicked}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{deleteFilter}\PYG{p}{)}
+        \PYG{c+c1}{\PYGZsh{} Adds the slider and it\PYGZsq{}s label to the layout}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{createLayout}\PYG{p}{()}
+        \PYG{c+c1}{\PYGZsh{} Function sending the slider signal to the processing function}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{thresh\PYGZus{}sld}\PYG{o}{.}\PYG{n}{valueChanged}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{changeValue}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{setParameters}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{minValue}\PYG{p}{,} \PYG{n}{maxValue}\PYG{p}{):}
+        \PYG{c+c1}{\PYGZsh{} Creates the slider for the OpenCV filter, with min, max, default and}
+        \PYG{c+c1}{\PYGZsh{} step values}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{thresh\PYGZus{}sld} \PYG{o}{=} \PYG{n}{QSlider}\PYG{p}{(}\PYG{n}{Qt}\PYG{o}{.}\PYG{n}{Horizontal}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{thresh\PYGZus{}sld}\PYG{o}{.}\PYG{n}{setFocusPolicy}\PYG{p}{(}\PYG{n}{Qt}\PYG{o}{.}\PYG{n}{NoFocus}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{thresh\PYGZus{}sld}\PYG{o}{.}\PYG{n}{setMinimum}\PYG{p}{(}\PYG{n}{minValue}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{thresh\PYGZus{}sld}\PYG{o}{.}\PYG{n}{setMaximum}\PYG{p}{(}\PYG{n}{maxValue}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{thresh\PYGZus{}sld}\PYG{o}{.}\PYG{n}{setValue}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{k}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{])}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{thresh\PYGZus{}sld}\PYG{o}{.}\PYG{n}{setSingleStep}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{createLayout}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{c+c1}{\PYGZsh{} Adds the slider and its label to the bottom of the main layout}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{lay}\PYG{o}{.}\PYG{n}{addWidget}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{name\PYGZus{}lbl}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{lay}\PYG{o}{.}\PYG{n}{addWidget}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{k\PYGZus{}lbl}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{])}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{lay}\PYG{o}{.}\PYG{n}{addWidget}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{thresh\PYGZus{}sld}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{lay}\PYG{o}{.}\PYG{n}{addWidget}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{delete\PYGZus{}filter\PYGZus{}btn}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{changeValue}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{value}\PYG{p}{):}
+        \PYG{c+c1}{\PYGZsh{} Function for setting the value of k1}
+        \PYG{k}{if} \PYG{n}{value} \PYG{o}{\PYGZpc{}} \PYG{l+m+mi}{2} \PYG{o}{==} \PYG{l+m+mi}{1}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{k}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{=} \PYG{n}{value}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{k}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{=} \PYG{n}{value} \PYG{o}{+} \PYG{l+m+mi}{1}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{thresh\PYGZus{}sld}\PYG{o}{.}\PYG{n}{setValue}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{k}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{])}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{k\PYGZus{}lbl}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{n+nb}{str}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{k}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{parent}\PYG{p}{()}\PYG{o}{.}\PYG{n}{parent}\PYG{p}{()}\PYG{o}{.}\PYG{n}{updateImages}\PYG{p}{()}
+    \PYG{k}{def} \PYG{n+nf}{resetValue}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{c+c1}{\PYGZsh{} Resets the K value to it\PYGZsq{}s default}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{changeValue}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{defaultK}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{deleteFilter}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{parent}\PYG{p}{()}\PYG{o}{.}\PYG{n}{parent}\PYG{p}{()}\PYG{o}{.}\PYG{n}{deleteFilter}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{filter\PYGZus{}number}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{process}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{name}\PYG{p}{):}
+        \PYG{n}{k} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{k}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}
+        \PYG{n}{kernel} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{ones}\PYG{p}{((}\PYG{n}{k}\PYG{p}{,} \PYG{n}{k}\PYG{p}{),} \PYG{n}{np}\PYG{o}{.}\PYG{n}{uint8}\PYG{p}{)}
+        \PYG{k}{if} \PYG{n}{name} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}Invert\PYGZsq{}}\PYG{p}{:}
+            \PYG{n}{cv\PYGZus{}before} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}RGB2GRAY}\PYG{p}{)}
+            \PYG{n}{cv\PYGZus{}after} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bitwise\PYGZus{}not}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{)}
+        \PYG{k}{elif} \PYG{n}{name} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}Histogram Equalization\PYGZsq{}}\PYG{p}{:}
+            \PYG{n}{cv\PYGZus{}before} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}RGB2GRAY}\PYG{p}{)}
+            \PYG{n}{clahe} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{createCLAHE}\PYG{p}{(}\PYG{n}{clipLimit}\PYG{o}{=}\PYG{l+m+mf}{2.0}\PYG{p}{,} \PYG{n}{tileGridSize}\PYG{o}{=}\PYG{p}{(}\PYG{l+m+mi}{8}\PYG{p}{,} \PYG{l+m+mi}{8}\PYG{p}{))}
+            \PYG{n}{cv\PYGZus{}after} \PYG{o}{=} \PYG{n}{clahe}\PYG{o}{.}\PYG{n}{apply}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{)}
+        \PYG{k}{elif} \PYG{n}{name} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}Threshold\PYGZsq{}}\PYG{p}{:}
+            \PYG{n}{cv\PYGZus{}before} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}RGB2GRAY}\PYG{p}{)}
+            \PYG{n}{ret}\PYG{p}{,} \PYG{n}{cv\PYGZus{}after} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{threshold}\PYG{p}{(}
+                \PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{k}\PYG{p}{,} \PYG{l+m+mi}{255}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{THRESH\PYGZus{}BINARY}\PYG{p}{)}
+        \PYG{k}{elif} \PYG{n}{name} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}Gaussian Threshold\PYGZsq{}}\PYG{p}{:}
+            \PYG{n}{cv\PYGZus{}before} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}RGB2GRAY}\PYG{p}{)}
+            \PYG{n}{cv\PYGZus{}after} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{adaptiveThreshold}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{l+m+mi}{255}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{ADAPTIVE\PYGZus{}THRESH\PYGZus{}GAUSSIAN\PYGZus{}C}\PYG{p}{,}
+                                             \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{THRESH\PYGZus{}BINARY}\PYG{p}{,} \PYG{n}{k}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{)}
+        \PYG{k}{elif} \PYG{n}{name} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}HSV\PYGZsq{}}\PYG{p}{:}
+            \PYG{n}{cv\PYGZus{}before} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}RGB2HSV}\PYG{p}{)}
+            \PYG{n}{lower\PYGZus{}color} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{([}\PYG{n}{k} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{35}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{])}
+            \PYG{n}{upper\PYGZus{}color} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{([}\PYG{n}{k} \PYG{o}{+} \PYG{l+m+mi}{35}\PYG{p}{,} \PYG{l+m+mi}{255}\PYG{p}{,} \PYG{l+m+mi}{255}\PYG{p}{])}
+            \PYG{n}{cv\PYGZus{}after} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{inRange}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{lower\PYGZus{}color}\PYG{p}{,} \PYG{n}{upper\PYGZus{}color}\PYG{p}{)}
+        \PYG{k}{elif} \PYG{n}{name} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}LAB\PYGZsq{}}\PYG{p}{:}
+            \PYG{n}{cv\PYGZus{}before} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}RGB2LAB}\PYG{p}{)}
+            \PYG{n}{L}\PYG{p}{,} \PYG{n}{a}\PYG{p}{,} \PYG{n}{b} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{split}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{)}
+            \PYG{n}{ret}\PYG{p}{,} \PYG{n}{cv\PYGZus{}after} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{threshold}\PYG{p}{(}\PYG{n}{L}\PYG{p}{,} \PYG{n}{k}\PYG{p}{,} \PYG{l+m+mi}{255}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{THRESH\PYGZus{}BINARY}\PYG{p}{)}
+        \PYG{k}{elif} \PYG{n}{name} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}Erosion\PYGZsq{}}\PYG{p}{:}
+            \PYG{n}{cv\PYGZus{}before} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}RGB2GRAY}\PYG{p}{)}
+            \PYG{n}{cv\PYGZus{}after} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{erode}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{kernel}\PYG{p}{,} \PYG{n}{iterations}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{)}
+        \PYG{k}{elif} \PYG{n}{name} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}Dilation\PYGZsq{}}\PYG{p}{:}
+            \PYG{n}{cv\PYGZus{}before} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}RGB2GRAY}\PYG{p}{)}
+            \PYG{n}{cv\PYGZus{}after} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{dilate}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{kernel}\PYG{p}{,} \PYG{n}{iterations}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{)}
+        \PYG{k}{elif} \PYG{n}{name} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}Opening\PYGZsq{}}\PYG{p}{:}
+            \PYG{n}{cv\PYGZus{}before} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}RGB2GRAY}\PYG{p}{)}
+            \PYG{n}{cv\PYGZus{}after} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{morphologyEx}\PYG{p}{(}
+                \PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{MORPH\PYGZus{}OPEN}\PYG{p}{,} \PYG{n}{kernel}\PYG{p}{)}
+        \PYG{k}{elif} \PYG{n}{name} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}Closing\PYGZsq{}}\PYG{p}{:}
+            \PYG{n}{cv\PYGZus{}before} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}RGB2GRAY}\PYG{p}{)}
+            \PYG{n}{cv\PYGZus{}after} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{morphologyEx}\PYG{p}{(}
+                \PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{MORPH\PYGZus{}CLOSE}\PYG{p}{,} \PYG{n}{kernel}\PYG{p}{)}
+        \PYG{k}{elif} \PYG{n}{name} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}Top Hat\PYGZsq{}}\PYG{p}{:}
+            \PYG{n}{cv\PYGZus{}before} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}RGB2GRAY}\PYG{p}{)}
+            \PYG{n}{cv\PYGZus{}after} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{morphologyEx}\PYG{p}{(}
+                \PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{MORPH\PYGZus{}TOPHAT}\PYG{p}{,} \PYG{n}{kernel}\PYG{p}{)}
+        \PYG{k}{elif} \PYG{n}{name} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}Black Hat\PYGZsq{}}\PYG{p}{:}
+            \PYG{n}{cv\PYGZus{}before} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}RGB2GRAY}\PYG{p}{)}
+            \PYG{n}{cv\PYGZus{}after} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{morphologyEx}\PYG{p}{(}
+                \PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{MORPH\PYGZus{}BLACKHAT}\PYG{p}{,} \PYG{n}{kernel}\PYG{p}{)}
+        \PYG{k}{elif} \PYG{n}{name} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}Canny\PYGZsq{}}\PYG{p}{:}
+            \PYG{n}{cv\PYGZus{}before} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}RGB2GRAY}\PYG{p}{)}
+            \PYG{n}{cv\PYGZus{}after} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{Canny}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{l+m+mi}{100}\PYG{p}{,} \PYG{n}{k}\PYG{p}{)}
+        \PYG{k}{elif} \PYG{n}{name} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}Laplacian\PYGZsq{}}\PYG{p}{:}
+            \PYG{n}{cv\PYGZus{}before} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}RGB2GRAY}\PYG{p}{)}
+            \PYG{n}{cv\PYGZus{}after} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{Laplacian}\PYG{p}{(}\PYG{n}{cv\PYGZus{}before}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{CV\PYGZus{}64F}\PYG{p}{)}
+            \PYG{n}{cv\PYGZus{}after} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{absolute}\PYG{p}{(}\PYG{n}{cv\PYGZus{}after}\PYG{p}{)}
+            \PYG{n}{cv\PYGZus{}after} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{uint8}\PYG{p}{(}\PYG{n}{cv\PYGZus{}after}\PYG{p}{)}
+        \PYG{k}{return} \PYG{n}{cv\PYGZus{}after}
+\end{Verbatim}

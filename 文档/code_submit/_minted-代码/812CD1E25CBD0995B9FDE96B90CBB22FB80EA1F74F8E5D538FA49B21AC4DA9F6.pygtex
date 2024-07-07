@@ -1,0 +1,364 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k+kn}{import} \PYG{n+nn}{json}
+\PYG{k+kn}{import} \PYG{n+nn}{time}
+\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k}{as} \PYG{n+nn}{np}
+\PYG{k+kn}{import} \PYG{n+nn}{pyaudio}
+\PYG{k+kn}{from} \PYG{n+nn}{PyQt5.QtCore} \PYG{k+kn}{import} \PYG{p}{(}\PYG{n}{QTimer}\PYG{p}{,} \PYG{n}{pyqtSignal}\PYG{p}{,}\PYG{n}{QThread}\PYG{p}{)}
+\PYG{k+kn}{from} \PYG{n+nn}{CvPyGui} \PYG{k+kn}{import} \PYG{n}{ImageCvQtContainer}
+\PYG{k+kn}{import} \PYG{n+nn}{pygame}
+\PYG{k+kn}{import} \PYG{n+nn}{cv2}
+\PYG{k+kn}{import} \PYG{n+nn}{threading}
+\PYG{k+kn}{from} \PYG{n+nn}{PyQt5.QtWidgets} \PYG{k+kn}{import} \PYG{n}{QWidget}
+\PYG{k+kn}{from} \PYG{n+nn}{CvPyGui.ui} \PYG{k+kn}{import} \PYG{n}{child\PYGZus{}test}
+\PYG{n}{Ui\PYGZus{}ChildWindow} \PYG{o}{=} \PYG{n}{child\PYGZus{}test}\PYG{o}{.}\PYG{n}{Ui\PYGZus{}Form}
+\PYG{n}{hd\PYGZus{}width} \PYG{o}{=} \PYG{l+m+mi}{1920}
+\PYG{n}{hd\PYGZus{}higth}\PYG{o}{=} \PYG{l+m+mi}{1080}
+\PYG{n}{pleace\PYGZus{}choice\PYGZus{}camera} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}请选择摄像头\PYGZsq{}}
+\PYG{n}{no\PYGZus{}camera\PYGZus{}} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}不选择摄像头\PYGZsq{}}
+\PYG{n}{pleace\PYGZus{}choice\PYGZus{}voice} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}请选择麦克风\PYGZsq{}}
+\PYG{n}{no\PYGZus{}voice} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}不选择麦克风\PYGZsq{}}
+\PYG{n}{img\PYGZus{}no\PYGZus{}camera} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imread}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}config/image/no\PYGZus{}camera.jpg\PYGZsq{}}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{IMREAD\PYGZus{}COLOR}\PYG{p}{)}
+\PYG{n}{img\PYGZus{}no\PYGZus{}voice} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imread}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}config/image/no\PYGZus{}voice.jpg\PYGZsq{}}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{IMREAD\PYGZus{}COLOR}\PYG{p}{)}
+\PYG{n}{img\PYGZus{}voice} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imread}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}config/image/voice.jpg\PYGZsq{}}\PYG{p}{,}\PYG{n}{cv2}\PYG{o}{.}\PYG{n}{IMREAD\PYGZus{}COLOR}\PYG{p}{)}
+\PYG{n}{tab1\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{False} \PYG{c+c1}{\PYGZsh{}判断下拉列表选择的内容是否是摄像头}
+\PYG{n}{tab2\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{False}
+\PYG{n}{tab3\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{False}
+\PYG{n}{tab4\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{False}
+\PYG{n}{camera\PYGZus{}judge} \PYG{o}{=} \PYG{p}{\PYGZob{}\PYGZcb{}}
+\PYG{n}{thread\PYGZus{}judge} \PYG{o}{=} \PYG{p}{\PYGZob{}\PYGZcb{}}
+\PYG{n}{frame} \PYG{o}{=} \PYG{p}{\PYGZob{}\PYGZcb{}}
+\PYG{n}{frame2} \PYG{o}{=} \PYG{p}{\PYGZob{}\PYGZcb{}}
+\PYG{n}{frame3} \PYG{o}{=} \PYG{p}{\PYGZob{}\PYGZcb{}}
+\PYG{n}{cap} \PYG{o}{=} \PYG{p}{\PYGZob{}\PYGZcb{}}
+\PYG{n}{cap2} \PYG{o}{=} \PYG{p}{\PYGZob{}\PYGZcb{}}
+\PYG{n}{cap3} \PYG{o}{=} \PYG{p}{\PYGZob{}\PYGZcb{}}
+\PYG{n}{tab1\PYGZus{}text} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}\PYGZsq{}}
+\PYG{n}{tab2\PYGZus{}text} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}\PYGZsq{}}
+\PYG{n}{tab3\PYGZus{}text} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}\PYGZsq{}}
+\PYG{n}{tab4\PYGZus{}text} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}\PYGZsq{}}
+\PYG{k}{class} \PYG{n+nc}{UpdateVolume}\PYG{p}{(}\PYG{n}{QThread}\PYG{p}{):}
+    \PYG{n}{update\PYGZus{}data} \PYG{o}{=} \PYG{n}{pyqtSignal}\PYG{p}{(}\PYG{n+nb}{str}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n+nb}{super}\PYG{p}{()}\PYG{o}{.}\PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{vo\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{True}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index\PYGZus{}thread} \PYG{o}{=} \PYG{l+m+mi}{0}
+    \PYG{k}{def} \PYG{n+nf}{run}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n}{CHUNK} \PYG{o}{=} \PYG{l+m+mi}{1024}
+        \PYG{n}{FORMAT} \PYG{o}{=} \PYG{n}{pyaudio}\PYG{o}{.}\PYG{n}{paInt16}
+        \PYG{n}{CHANNELS} \PYG{o}{=} \PYG{l+m+mi}{1}
+        \PYG{n}{RATE} \PYG{o}{=} \PYG{l+m+mi}{44100}
+        \PYG{n}{INTERVAL} \PYG{o}{=} \PYG{l+m+mi}{5}
+        \PYG{n}{pa} \PYG{o}{=} \PYG{n}{pyaudio}\PYG{o}{.}\PYG{n}{PyAudio}\PYG{p}{()}
+        \PYG{n}{stream} \PYG{o}{=} \PYG{n}{pa}\PYG{o}{.}\PYG{n}{open}\PYG{p}{(}\PYG{n+nb}{format}\PYG{o}{=}\PYG{n}{FORMAT}\PYG{p}{,}
+                         \PYG{n}{channels}\PYG{o}{=}\PYG{n}{CHANNELS}\PYG{p}{,}
+                         \PYG{n}{rate}\PYG{o}{=}\PYG{n}{RATE}\PYG{p}{,}
+                         \PYG{n+nb}{input}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{,}
+                         \PYG{n}{frames\PYGZus{}per\PYGZus{}buffer}\PYG{o}{=}\PYG{n}{CHUNK}\PYG{p}{,}
+                         \PYG{n}{input\PYGZus{}device\PYGZus{}index}\PYG{o}{=}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index\PYGZus{}thread}\PYG{p}{)}
+        \PYG{n}{buffer} \PYG{o}{=} \PYG{p}{[]}
+        \PYG{k}{while} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{vo\PYGZus{}judge}\PYG{p}{:}
+            \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{int}\PYG{p}{(}\PYG{n}{INTERVAL} \PYG{o}{*} \PYG{n}{RATE} \PYG{o}{/} \PYG{n}{CHUNK}\PYG{p}{)):}  \PYG{c+c1}{\PYGZsh{} STREAN INTERVAL}
+                \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{vo\PYGZus{}judge} \PYG{o}{==} \PYG{k+kc}{False}\PYG{p}{:}
+                    \PYG{k}{break}
+                \PYG{n}{data} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{fromstring}\PYG{p}{(}\PYG{n}{stream}\PYG{o}{.}\PYG{n}{read}\PYG{p}{(}\PYG{n}{CHUNK}\PYG{p}{),} \PYG{n}{dtype}\PYG{o}{=}\PYG{n}{np}\PYG{o}{.}\PYG{n}{int16}\PYG{p}{)}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{un} \PYG{o}{=} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{amax}\PYG{p}{(}\PYG{n}{data}\PYG{p}{))}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{un} \PYG{o}{=} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n+nb}{pow}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{un}\PYG{p}{,}\PYG{l+m+mf}{0.5}\PYG{p}{))}
+                \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{un} \PYG{o}{\PYGZgt{}=} \PYG{l+m+mi}{100}\PYG{p}{:}
+                    \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{un} \PYG{o}{=} \PYG{l+m+mi}{99}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}data}\PYG{o}{.}\PYG{n}{emit}\PYG{p}{(}\PYG{n+nb}{str}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{un}\PYG{p}{))}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}子线程结束\PYGZsq{}}\PYG{p}{)}
+\PYG{c+c1}{\PYGZsh{}1:下拉列表选择后lable标签显示对应的视频。  获取下拉列表的内容  根据内容确定显示的摄像头。}
+\PYG{k}{class} \PYG{n+nc}{Child\PYGZus{}Window}\PYG{p}{(}\PYG{n}{QWidget}\PYG{p}{,}\PYG{n}{Ui\PYGZus{}ChildWindow}\PYG{p}{):}
+    \PYG{k}{def} \PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n+nb}{super}\PYG{p}{()}\PYG{o}{.}\PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{()}
+        \PYG{n}{Ui\PYGZus{}ChildWindow}\PYG{o}{.}\PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{setupUi}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{InitChildWindow}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{timer} \PYG{o}{=} \PYG{n}{QTimer}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{child\PYGZus{}wind\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{True}
+    \PYG{k}{def} \PYG{n+nf}{InitChildWindow}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}\PYG{c+c1}{\PYGZsh{}初始化子窗口}
+        \PYG{n}{pygame}\PYG{o}{.}\PYG{n}{init}\PYG{p}{()}
+        \PYG{n}{pygame}\PYG{o}{.}\PYG{n}{camera}\PYG{o}{.}\PYG{n}{init}\PYG{p}{()}
+        \PYG{k}{global} \PYG{n}{cameralist\PYGZus{}child}
+        \PYG{n}{cameralist\PYGZus{}child} \PYG{o}{=} \PYG{n}{pygame}\PYG{o}{.}\PYG{n}{camera}\PYG{o}{.}\PYG{n}{list\PYGZus{}cameras}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}tab1\PYGZus{}image} \PYG{o}{=} \PYG{n}{ImageCvQtContainer}\PYG{o}{.}\PYG{n}{Image}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}tab1\PYGZus{}label\PYGZus{}camera\PYGZsq{}}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}label}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}tab2\PYGZus{}image} \PYG{o}{=} \PYG{n}{ImageCvQtContainer}\PYG{o}{.}\PYG{n}{Image}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}tab2\PYGZus{}label\PYGZus{}camera\PYGZsq{}}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}label\PYGZus{}3}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}tab3\PYGZus{}image} \PYG{o}{=} \PYG{n}{ImageCvQtContainer}\PYG{o}{.}\PYG{n}{Image}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}tab3\PYGZus{}label\PYGZus{}camera\PYGZsq{}}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}label\PYGZus{}4}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}tab1\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{img\PYGZus{}no\PYGZus{}camera}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}tab2\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{img\PYGZus{}no\PYGZus{}camera}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}tab3\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{img\PYGZus{}no\PYGZus{}camera}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox}\PYG{o}{.}\PYG{n}{addItem}\PYG{p}{(}\PYG{n}{pleace\PYGZus{}choice\PYGZus{}camera}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}3}\PYG{o}{.}\PYG{n}{addItem}\PYG{p}{(}\PYG{n}{pleace\PYGZus{}choice\PYGZus{}camera}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}4}\PYG{o}{.}\PYG{n}{addItem}\PYG{p}{(}\PYG{n}{pleace\PYGZus{}choice\PYGZus{}camera}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}7}\PYG{o}{.}\PYG{n}{addItem}\PYG{p}{(}\PYG{n}{pleace\PYGZus{}choice\PYGZus{}voice}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox}\PYG{o}{.}\PYG{n}{addItem}\PYG{p}{(}\PYG{n}{no\PYGZus{}camera\PYGZus{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}3}\PYG{o}{.}\PYG{n}{addItem}\PYG{p}{(}\PYG{n}{no\PYGZus{}camera\PYGZus{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}4}\PYG{o}{.}\PYG{n}{addItem}\PYG{p}{(}\PYG{n}{no\PYGZus{}camera\PYGZus{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}7}\PYG{o}{.}\PYG{n}{addItem}\PYG{p}{(}\PYG{n}{no\PYGZus{}voice}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox}\PYG{o}{.}\PYG{n}{addItems}\PYG{p}{(}\PYG{n}{cameralist\PYGZus{}child}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}3}\PYG{o}{.}\PYG{n}{addItems}\PYG{p}{(}\PYG{n}{cameralist\PYGZus{}child}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}4}\PYG{o}{.}\PYG{n}{addItems}\PYG{p}{(}\PYG{n}{cameralist\PYGZus{}child}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{CreateButtons}\PYG{p}{()}
+        \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}config/db.json\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}r\PYGZdq{}}\PYG{p}{,}\PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}UTF\PYGZhy{}8\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{dbfile\PYGZus{}r}\PYG{p}{:}
+            \PYG{n}{camera\PYGZus{}voice\PYGZus{}name} \PYG{o}{=} \PYG{n}{json}\PYG{o}{.}\PYG{n}{load}\PYG{p}{(}\PYG{n}{dbfile\PYGZus{}r}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}text} \PYG{o}{=} \PYG{n}{camera\PYGZus{}voice\PYGZus{}name}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}hd\PYGZus{}camera\PYGZus{}name\PYGZdq{}}\PYG{p}{]}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab2\PYGZus{}text} \PYG{o}{=} \PYG{n}{camera\PYGZus{}voice\PYGZus{}name}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}face\PYGZus{}camera\PYGZus{}name\PYGZdq{}}\PYG{p}{]}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab3\PYGZus{}text} \PYG{o}{=} \PYG{n}{camera\PYGZus{}voice\PYGZus{}name}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}eye\PYGZus{}camera\PYGZus{}name\PYGZdq{}}\PYG{p}{]}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab4\PYGZus{}text} \PYG{o}{=} \PYG{n}{camera\PYGZus{}voice\PYGZus{}name}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}hk\PYGZus{}voice\PYGZus{}name\PYGZdq{}}\PYG{p}{]}
+        \PYG{k}{if} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{cameralist\PYGZus{}child}\PYG{p}{)} \PYG{o}{\PYGZgt{}=} \PYG{l+m+mi}{1}\PYG{p}{:}
+            \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{cameralist\PYGZus{}child}\PYG{p}{)):}
+                \PYG{n}{camera\PYGZus{}judge}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}close\PYGZsq{}}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}no camera\PYGZsq{}}\PYG{p}{)}
+        \PYG{n}{p} \PYG{o}{=} \PYG{n}{pyaudio}\PYG{o}{.}\PYG{n}{PyAudio}\PYG{p}{()}
+        \PYG{n}{info} \PYG{o}{=} \PYG{n}{p}\PYG{o}{.}\PYG{n}{get\PYGZus{}host\PYGZus{}api\PYGZus{}info\PYGZus{}by\PYGZus{}index}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{)}
+        \PYG{n}{numdevices} \PYG{o}{=} \PYG{n}{info}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}deviceCount\PYGZsq{}}\PYG{p}{)}
+        \PYG{k}{global} \PYG{n}{voice\PYGZus{}list}
+        \PYG{n}{voice\PYGZus{}list} \PYG{o}{=} \PYG{p}{[]}
+        \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{numdevices}\PYG{p}{):}
+            \PYG{k}{if} \PYG{p}{(}\PYG{n}{p}\PYG{o}{.}\PYG{n}{get\PYGZus{}device\PYGZus{}info\PYGZus{}by\PYGZus{}host\PYGZus{}api\PYGZus{}device\PYGZus{}index}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{i}\PYG{p}{)}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}maxInputChannels\PYGZsq{}}\PYG{p}{))} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}\PYG{p}{:}
+                \PYG{n}{voice\PYGZus{}list}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{p}\PYG{o}{.}\PYG{n}{get\PYGZus{}device\PYGZus{}info\PYGZus{}by\PYGZus{}host\PYGZus{}api\PYGZus{}device\PYGZus{}index}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{i}\PYG{p}{)}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}name\PYGZsq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}7}\PYG{o}{.}\PYG{n}{addItems}\PYG{p}{(}\PYG{n}{voice\PYGZus{}list}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{child\PYGZus{}wind\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{True}
+        \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}text} \PYG{o+ow}{in} \PYG{n}{cameralist\PYGZus{}child}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox}\PYG{o}{.}\PYG{n}{setCurrentIndex}\PYG{p}{(}\PYG{n}{cameralist\PYGZus{}child}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}text}\PYG{p}{)} \PYG{o}{+} \PYG{l+m+mi}{2}\PYG{p}{)}
+        \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab2\PYGZus{}text} \PYG{o+ow}{in} \PYG{n}{cameralist\PYGZus{}child}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}3}\PYG{o}{.}\PYG{n}{setCurrentIndex}\PYG{p}{(}\PYG{n}{cameralist\PYGZus{}child}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab2\PYGZus{}text}\PYG{p}{)} \PYG{o}{+} \PYG{l+m+mi}{2}\PYG{p}{)}
+        \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab3\PYGZus{}text} \PYG{o+ow}{in} \PYG{n}{cameralist\PYGZus{}child}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}4}\PYG{o}{.}\PYG{n}{setCurrentIndex}\PYG{p}{(}\PYG{n}{cameralist\PYGZus{}child}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab3\PYGZus{}text}\PYG{p}{)} \PYG{o}{+} \PYG{l+m+mi}{2}\PYG{p}{)}
+        \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab4\PYGZus{}text} \PYG{o+ow}{in} \PYG{n}{voice\PYGZus{}list}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}7}\PYG{o}{.}\PYG{n}{setCurrentIndex}\PYG{p}{(}\PYG{n}{voice\PYGZus{}list}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab4\PYGZus{}text}\PYG{p}{)} \PYG{o}{+} \PYG{l+m+mi}{2}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{tab1\PYGZus{}combobox\PYGZus{}setting}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}  \PYG{c+c1}{\PYGZsh{} tab1中的下拉列表选择摄像头}
+        \PYG{c+c1}{\PYGZsh{}获取当前下拉列表选中的文本}
+        \PYG{n}{tab1\PYGZus{}camera\PYGZus{}text} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}text} \PYG{o}{=} \PYG{n}{tab1\PYGZus{}camera\PYGZus{}text}
+        \PYG{c+c1}{\PYGZsh{}尝试查询当前文本所在摄像头列表中第几项，查询不到则显示没有摄像头的图片。}
+        \PYG{k}{try}\PYG{p}{:}
+            \PYG{n}{tab1\PYGZus{}camera\PYGZus{}index} \PYG{o}{=} \PYG{n}{cameralist\PYGZus{}child}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n}{tab1\PYGZus{}camera\PYGZus{}text}\PYG{p}{)}
+            \PYG{n}{tab1\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{True}
+        \PYG{k}{except}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}tab1\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{img\PYGZus{}no\PYGZus{}camera}\PYG{p}{)}
+            \PYG{n}{tab1\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{False}
+        \PYG{c+c1}{\PYGZsh{}获取摄像头的名字后显示画面}
+        \PYG{c+c1}{\PYGZsh{}启动一个线程，显示摄像头捕获的画面}
+        \PYG{c+c1}{\PYGZsh{}如果查询到文本所在该列表中，并且该摄像头没有打开，就启动线程显示该摄像头的画面}
+        \PYG{k}{if} \PYG{n}{tab1\PYGZus{}judge}\PYG{p}{:}
+            \PYG{k}{if} \PYG{n}{camera\PYGZus{}judge}\PYG{p}{[}\PYG{n}{tab1\PYGZus{}camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}close\PYGZsq{}}\PYG{p}{:}
+                \PYG{n}{camera\PYGZus{}judge}\PYG{p}{[}\PYG{n}{tab1\PYGZus{}camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}open\PYGZsq{}}
+                \PYG{n}{threading}\PYG{o}{.}\PYG{n}{\PYGZus{}start\PYGZus{}new\PYGZus{}thread}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{open\PYGZus{}camera}\PYG{p}{,(}\PYG{n}{tab1\PYGZus{}camera\PYGZus{}index}\PYG{p}{,))}
+        \PYG{k}{else}\PYG{p}{:}
+           \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}tab1\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{img\PYGZus{}no\PYGZus{}camera}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{tab2\PYGZus{}combobox\PYGZus{}setting}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n}{tab2\PYGZus{}camera\PYGZus{}text} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}3}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab2\PYGZus{}text} \PYG{o}{=} \PYG{n}{tab2\PYGZus{}camera\PYGZus{}text}
+        \PYG{k}{try}\PYG{p}{:}
+            \PYG{n}{tab2\PYGZus{}camera\PYGZus{}index} \PYG{o}{=} \PYG{n}{cameralist\PYGZus{}child}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n}{tab2\PYGZus{}camera\PYGZus{}text}\PYG{p}{)}
+            \PYG{n}{tab2\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{True}
+        \PYG{k}{except}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}tab2\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{img\PYGZus{}no\PYGZus{}camera}\PYG{p}{)}
+            \PYG{n}{tab2\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{False}
+        \PYG{c+c1}{\PYGZsh{} 获取摄像头的名字后显示画面}
+        \PYG{c+c1}{\PYGZsh{} 启动一个线程，显示摄像头捕获的画面}
+        \PYG{k}{if} \PYG{n}{tab2\PYGZus{}judge}\PYG{p}{:}
+            \PYG{c+c1}{\PYGZsh{}如果选择的摄像头没有打开}
+            \PYG{k}{if} \PYG{n}{camera\PYGZus{}judge}\PYG{p}{[}\PYG{n}{tab2\PYGZus{}camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}close\PYGZsq{}}\PYG{p}{:}
+                \PYG{n}{camera\PYGZus{}judge}\PYG{p}{[}\PYG{n}{tab2\PYGZus{}camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}open\PYGZsq{}}
+                \PYG{n}{threading}\PYG{o}{.}\PYG{n}{\PYGZus{}start\PYGZus{}new\PYGZus{}thread}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{open\PYGZus{}camera\PYGZus{}2}\PYG{p}{,} \PYG{p}{(}\PYG{n}{tab2\PYGZus{}camera\PYGZus{}index}\PYG{p}{,))}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}tab2\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{img\PYGZus{}no\PYGZus{}camera}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{open\PYGZus{}camera}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,}\PYG{n}{camera\PYGZus{}index}\PYG{p}{):}
+        \PYG{c+c1}{\PYGZsh{}传入摄像头的序号，判断摄像头是否开启的代码应该在调用该函数的函数中。}
+        \PYG{c+c1}{\PYGZsh{}根据摄像头的序号，打开摄像头，然后把摄像头的画面传入其他函数？}
+        \PYG{c+c1}{\PYGZsh{}只有三个要显示的标签，判断要在那个标签上显示，然后更新图片。}
+        \PYG{c+c1}{\PYGZsh{} cap[camera\PYGZus{}index] = cv2.VideoCapture(camera\PYGZus{}index,cv2.CAP\PYGZus{}DSHOW)}
+        \PYG{n}{cap}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{VideoCapture}\PYG{p}{(}\PYG{n}{camera\PYGZus{}index}\PYG{p}{)}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{cap}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{))}
+        \PYG{n}{camera\PYGZus{}judge}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}open\PYGZsq{}}
+        \PYG{n}{cap}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]}\PYG{o}{.}\PYG{n}{set}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,}\PYG{n}{hd\PYGZus{}width}\PYG{p}{)}
+        \PYG{n}{cap}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]}\PYG{o}{.}\PYG{n}{set}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,}\PYG{n}{hd\PYGZus{}width}\PYG{p}{)}
+        \PYG{n}{cap}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]}\PYG{o}{.}\PYG{n}{set}\PYG{p}{(}\PYG{l+m+mi}{5}\PYG{p}{,}\PYG{l+m+mi}{30}\PYG{p}{)}
+        \PYG{k}{while} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{child\PYGZus{}wind\PYGZus{}judge}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{ret}\PYG{p}{,} \PYG{n}{frame}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{=} \PYG{n}{cap}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]}\PYG{o}{.}\PYG{n}{read}\PYG{p}{()}
+            \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{ret}\PYG{p}{:}
+                \PYG{c+c1}{\PYGZsh{}判断需要在哪几个标签上显示  判断方式：获取三个下拉列表当前显示的值，确定该值在摄像头列表中所占的序号，序号与camera\PYGZus{}index相同则更新图片。}
+                \PYG{n}{frame}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{frame}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{],} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}BGR2RGB}\PYG{p}{)}
+                \PYG{k}{if} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()} \PYG{o}{!=} \PYG{n}{pleace\PYGZus{}choice\PYGZus{}camera}\PYG{p}{)} \PYG{o+ow}{and} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()} \PYG{o}{!=} \PYG{n}{no\PYGZus{}camera\PYGZus{}}\PYG{p}{):}
+                    \PYG{k}{if} \PYG{n}{camera\PYGZus{}index} \PYG{o}{==} \PYG{n}{cameralist\PYGZus{}child}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()):}
+                        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}tab1\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{frame}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{])}
+                    \PYG{k}{else}\PYG{p}{:}
+                        \PYG{k}{pass}
+                \PYG{k}{else}\PYG{p}{:}
+                    \PYG{k}{pass}
+                \PYG{k}{if} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}3}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()} \PYG{o}{!=} \PYG{n}{pleace\PYGZus{}choice\PYGZus{}camera}\PYG{p}{)} \PYG{o+ow}{and} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}3}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()} \PYG{o}{!=} \PYG{n}{no\PYGZus{}camera\PYGZus{}}\PYG{p}{):}
+                    \PYG{k}{if} \PYG{n}{camera\PYGZus{}index} \PYG{o}{==} \PYG{n}{cameralist\PYGZus{}child}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}3}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()):}
+                        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}tab2\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{frame}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{])}
+                    \PYG{k}{else}\PYG{p}{:}
+                        \PYG{k}{pass}
+                \PYG{k}{else}\PYG{p}{:}
+                    \PYG{k}{pass}
+                \PYG{k}{if} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}4}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()} \PYG{o}{!=} \PYG{n}{pleace\PYGZus{}choice\PYGZus{}camera}\PYG{p}{)} \PYG{o+ow}{and} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}4}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()} \PYG{o}{!=} \PYG{n}{no\PYGZus{}camera\PYGZus{}}\PYG{p}{):}
+                    \PYG{k}{if} \PYG{n}{camera\PYGZus{}index} \PYG{o}{==} \PYG{n}{cameralist\PYGZus{}child}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}4}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()):}
+                        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}tab3\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{frame}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{])}
+                    \PYG{k}{else}\PYG{p}{:}
+                        \PYG{k}{pass}
+                \PYG{k}{else}\PYG{p}{:}
+                    \PYG{k}{pass}
+                \PYG{k}{if} \PYG{p}{(}\PYG{n}{cameralist\PYGZus{}child}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{!=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{())} \PYG{o}{\PYGZam{}} \PYG{p}{(}\PYG{n}{cameralist\PYGZus{}child}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{!=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}3}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{())} \PYG{o}{\PYGZam{}} \PYG{p}{(}\PYG{n}{cameralist\PYGZus{}child}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{!=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}4}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()):}
+                    \PYG{n}{camera\PYGZus{}judge}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}close\PYGZsq{}}
+                    \PYG{k}{break}
+            \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{child\PYGZus{}wind\PYGZus{}judge} \PYG{o}{==} \PYG{k+kc}{False}\PYG{p}{:} \PYG{c+c1}{\PYGZsh{}子窗口如果关闭就停止循环}
+                \PYG{k}{break}
+    \PYG{k}{def} \PYG{n+nf}{open\PYGZus{}camera\PYGZus{}2}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,}\PYG{n}{camera\PYGZus{}index}\PYG{p}{):}
+        \PYG{c+c1}{\PYGZsh{} cap2[camera\PYGZus{}index] = cv2.VideoCapture(camera\PYGZus{}index,cv2.CAP\PYGZus{}DSHOW)}
+        \PYG{n}{cap2}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{VideoCapture}\PYG{p}{(}\PYG{n}{camera\PYGZus{}index}\PYG{p}{)}
+        \PYG{n}{camera\PYGZus{}judge}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}open\PYGZsq{}}
+        \PYG{n}{cap2}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]}\PYG{o}{.}\PYG{n}{set}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,}\PYG{n}{hd\PYGZus{}width}\PYG{p}{)}
+        \PYG{n}{cap2}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]}\PYG{o}{.}\PYG{n}{set}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,}\PYG{n}{hd\PYGZus{}width}\PYG{p}{)}
+        \PYG{n}{cap2}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]}\PYG{o}{.}\PYG{n}{set}\PYG{p}{(}\PYG{l+m+mi}{5}\PYG{p}{,}\PYG{l+m+mf}{30.0}\PYG{p}{)}
+        \PYG{k}{while} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{child\PYGZus{}wind\PYGZus{}judge}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{ret\PYGZus{}2}\PYG{p}{,}\PYG{n}{frame2}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{=} \PYG{n}{cap2}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]}\PYG{o}{.}\PYG{n}{read}\PYG{p}{()}
+            \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{ret\PYGZus{}2}\PYG{p}{:}
+                \PYG{n}{frame2}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{frame2}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{],} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}BGR2RGB}\PYG{p}{)}
+                \PYG{k}{if} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()} \PYG{o}{!=} \PYG{n}{pleace\PYGZus{}choice\PYGZus{}camera}\PYG{p}{)} \PYG{o+ow}{and} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()} \PYG{o}{!=} \PYG{n}{no\PYGZus{}camera\PYGZus{}}\PYG{p}{):}
+                    \PYG{k}{if} \PYG{n}{camera\PYGZus{}index} \PYG{o}{==} \PYG{n}{cameralist\PYGZus{}child}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()):}
+                        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}tab1\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{frame2}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{])}
+                    \PYG{k}{else}\PYG{p}{:}
+                        \PYG{k}{pass}
+                \PYG{k}{else}\PYG{p}{:}
+                    \PYG{k}{pass}
+                \PYG{k}{if} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}3}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()} \PYG{o}{!=} \PYG{n}{pleace\PYGZus{}choice\PYGZus{}camera}\PYG{p}{)} \PYG{o+ow}{and} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}3}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()} \PYG{o}{!=} \PYG{n}{no\PYGZus{}camera\PYGZus{}}\PYG{p}{):}
+                    \PYG{k}{if} \PYG{n}{camera\PYGZus{}index} \PYG{o}{==} \PYG{n}{cameralist\PYGZus{}child}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}3}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()):}
+                        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}tab2\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{frame2}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{])}
+                    \PYG{k}{else}\PYG{p}{:}
+                        \PYG{k}{pass}
+                \PYG{k}{else}\PYG{p}{:}
+                    \PYG{k}{pass}
+                \PYG{k}{if} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}4}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()} \PYG{o}{!=} \PYG{n}{pleace\PYGZus{}choice\PYGZus{}camera}\PYG{p}{)} \PYG{o+ow}{and} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}4}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()} \PYG{o}{!=} \PYG{n}{no\PYGZus{}camera\PYGZus{}}\PYG{p}{):}
+                    \PYG{k}{if} \PYG{n}{camera\PYGZus{}index} \PYG{o}{==} \PYG{n}{cameralist\PYGZus{}child}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}4}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()):}
+                        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}tab3\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{frame2}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{])}
+                    \PYG{k}{else}\PYG{p}{:}
+                        \PYG{k}{pass}
+                \PYG{k}{else}\PYG{p}{:}
+                    \PYG{k}{pass}
+                \PYG{k}{if} \PYG{p}{(}\PYG{n}{cameralist\PYGZus{}child}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{!=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{())} \PYG{o}{\PYGZam{}} \PYG{p}{(}\PYG{n}{cameralist\PYGZus{}child}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{!=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}3}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{())} \PYG{o}{\PYGZam{}} \PYG{p}{(}\PYG{n}{cameralist\PYGZus{}child}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{!=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}4}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()):}
+                    \PYG{n}{camera\PYGZus{}judge}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}close\PYGZsq{}}
+                    \PYG{k}{break}
+                \PYG{k}{else}\PYG{p}{:}
+                    \PYG{k}{pass}
+                \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{child\PYGZus{}wind\PYGZus{}judge} \PYG{o}{==} \PYG{k+kc}{False}\PYG{p}{:} \PYG{c+c1}{\PYGZsh{}子窗口如果关闭就停止循环}
+                    \PYG{k}{break}
+    \PYG{k}{def} \PYG{n+nf}{open\PYGZus{}camera\PYGZus{}3}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,}\PYG{n}{camera\PYGZus{}index}\PYG{p}{):}
+        \PYG{c+c1}{\PYGZsh{} cap3[camera\PYGZus{}index] = cv2.VideoCapture(camera\PYGZus{}index,cv2.CAP\PYGZus{}DSHOW)}
+        \PYG{n}{cap3}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{VideoCapture}\PYG{p}{(}\PYG{n}{camera\PYGZus{}index}\PYG{p}{)}
+        \PYG{n}{camera\PYGZus{}judge}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}open\PYGZsq{}}
+        \PYG{n}{cap3}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]}\PYG{o}{.}\PYG{n}{set}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,}\PYG{n}{hd\PYGZus{}width}\PYG{p}{)}
+        \PYG{n}{cap3}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]}\PYG{o}{.}\PYG{n}{set}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,}\PYG{n}{hd\PYGZus{}width}\PYG{p}{)}
+        \PYG{n}{cap3}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]}\PYG{o}{.}\PYG{n}{set}\PYG{p}{(}\PYG{l+m+mi}{5}\PYG{p}{,}\PYG{l+m+mf}{30.0}\PYG{p}{)}
+        \PYG{k}{while} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{child\PYGZus{}wind\PYGZus{}judge}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{ret\PYGZus{}3}\PYG{p}{,} \PYG{n}{frame3}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{=} \PYG{n}{cap3}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]}\PYG{o}{.}\PYG{n}{read}\PYG{p}{()}
+            \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{ret\PYGZus{}3}\PYG{p}{:}
+                \PYG{n}{frame3}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{frame3}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{],} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}BGR2RGB}\PYG{p}{)}
+                \PYG{k}{if} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()} \PYG{o}{!=} \PYG{n}{pleace\PYGZus{}choice\PYGZus{}camera}\PYG{p}{)} \PYG{o+ow}{and} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()} \PYG{o}{!=} \PYG{n}{no\PYGZus{}camera\PYGZus{}}\PYG{p}{):}
+                    \PYG{k}{if} \PYG{n}{camera\PYGZus{}index} \PYG{o}{==} \PYG{n}{cameralist\PYGZus{}child}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()):}
+                        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}tab1\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{frame3}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{])}
+                    \PYG{k}{else}\PYG{p}{:}
+                        \PYG{k}{pass}
+                \PYG{k}{else}\PYG{p}{:}
+                    \PYG{k}{pass}
+                \PYG{k}{if} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}3}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()} \PYG{o}{!=} \PYG{n}{pleace\PYGZus{}choice\PYGZus{}camera}\PYG{p}{)} \PYG{o+ow}{and} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}3}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()} \PYG{o}{!=} \PYG{n}{no\PYGZus{}camera\PYGZus{}}\PYG{p}{):}
+                    \PYG{k}{if} \PYG{n}{camera\PYGZus{}index} \PYG{o}{==} \PYG{n}{cameralist\PYGZus{}child}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}3}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()):}
+                        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}tab2\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{frame3}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{])}
+                    \PYG{k}{else}\PYG{p}{:}
+                        \PYG{k}{pass}
+                \PYG{k}{else}\PYG{p}{:}
+                    \PYG{k}{pass}
+                \PYG{k}{if} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}4}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()} \PYG{o}{!=} \PYG{n}{pleace\PYGZus{}choice\PYGZus{}camera}\PYG{p}{)} \PYG{o+ow}{and} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}4}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()} \PYG{o}{!=} \PYG{n}{no\PYGZus{}camera\PYGZus{}}\PYG{p}{):}
+                    \PYG{k}{if} \PYG{n}{camera\PYGZus{}index} \PYG{o}{==} \PYG{n}{cameralist\PYGZus{}child}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}4}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()):}
+                        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}tab3\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{frame3}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{])}
+                    \PYG{k}{else}\PYG{p}{:}
+                        \PYG{k}{pass}
+                \PYG{k}{else}\PYG{p}{:}
+                    \PYG{k}{pass}
+                \PYG{k}{if} \PYG{p}{(}\PYG{n}{cameralist\PYGZus{}child}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{!=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{())} \PYG{o}{\PYGZam{}} \PYG{p}{(}\PYG{n}{cameralist\PYGZus{}child}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{!=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}3}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{())} \PYG{o}{\PYGZam{}} \PYG{p}{(}\PYG{n}{cameralist\PYGZus{}child}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{!=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}4}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()):}
+                    \PYG{n}{camera\PYGZus{}judge}\PYG{p}{[}\PYG{n}{camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}close\PYGZsq{}}
+                    \PYG{k}{break}
+                \PYG{k}{else}\PYG{p}{:}
+                    \PYG{k}{pass}
+                \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{child\PYGZus{}wind\PYGZus{}judge} \PYG{o}{==} \PYG{k+kc}{False}\PYG{p}{:} \PYG{c+c1}{\PYGZsh{}子窗口如果关闭就停止循环}
+                    \PYG{k}{break}
+    \PYG{k}{def} \PYG{n+nf}{tab3\PYGZus{}combobox\PYGZus{}setting}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n}{tab3\PYGZus{}camera\PYGZus{}text} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}4}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab3\PYGZus{}text} \PYG{o}{=} \PYG{n}{tab3\PYGZus{}camera\PYGZus{}text}
+        \PYG{k}{try}\PYG{p}{:}
+            \PYG{n}{tab3\PYGZus{}camera\PYGZus{}index} \PYG{o}{=} \PYG{n}{cameralist\PYGZus{}child}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n}{tab3\PYGZus{}camera\PYGZus{}text}\PYG{p}{)}
+            \PYG{n}{tab3\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{True}
+        \PYG{k}{except}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}tab3\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{img\PYGZus{}no\PYGZus{}camera}\PYG{p}{)}
+            \PYG{n}{tab3\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{False}
+        \PYG{c+c1}{\PYGZsh{} 获取摄像头的名字后显示画面}
+        \PYG{c+c1}{\PYGZsh{} 启动一个线程，显示摄像头捕获的画面}
+        \PYG{k}{if} \PYG{n}{tab3\PYGZus{}judge}\PYG{p}{:}
+            \PYG{k}{if} \PYG{n}{camera\PYGZus{}judge}\PYG{p}{[}\PYG{n}{tab3\PYGZus{}camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}close\PYGZsq{}}\PYG{p}{:}
+                \PYG{n}{camera\PYGZus{}judge}\PYG{p}{[}\PYG{n}{tab3\PYGZus{}camera\PYGZus{}index}\PYG{p}{]} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}open\PYGZsq{}}
+                \PYG{n}{threading}\PYG{o}{.}\PYG{n}{\PYGZus{}start\PYGZus{}new\PYGZus{}thread}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{open\PYGZus{}camera\PYGZus{}3}\PYG{p}{,} \PYG{p}{(}\PYG{n}{tab3\PYGZus{}camera\PYGZus{}index}\PYG{p}{,))}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}tab3\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{img\PYGZus{}no\PYGZus{}camera}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{tab4\PYGZus{}voice\PYGZus{}setting}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n}{tab4\PYGZus{}voice\PYGZus{}text} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}7}\PYG{o}{.}\PYG{n}{currentText}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab4\PYGZus{}text} \PYG{o}{=} \PYG{n}{tab4\PYGZus{}voice\PYGZus{}text}
+        \PYG{k}{try}\PYG{p}{:}
+            \PYG{n}{voice\PYGZus{}index} \PYG{o}{=} \PYG{n}{voice\PYGZus{}list}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab4\PYGZus{}text}\PYG{p}{)}
+            \PYG{n}{tab4\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{True}
+        \PYG{k}{except}\PYG{p}{:}
+            \PYG{n}{tab4\PYGZus{}judge} \PYG{o}{=}\PYG{k+kc}{False}
+        \PYG{k}{try}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{sub\PYGZus{}thread}\PYG{o}{.}\PYG{n}{vo\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{False}
+        \PYG{k}{except}\PYG{p}{:}
+            \PYG{k}{pass}
+        \PYG{n}{time}\PYG{o}{.}\PYG{n}{sleep}\PYG{p}{(}\PYG{l+m+mf}{0.2}\PYG{p}{)}
+        \PYG{k}{if} \PYG{n}{tab4\PYGZus{}judge}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{sub\PYGZus{}thread} \PYG{o}{=} \PYG{n}{UpdateVolume}\PYG{p}{()}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{sub\PYGZus{}thread}\PYG{o}{.}\PYG{n}{vo\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{True}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{sub\PYGZus{}thread}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index\PYGZus{}thread} \PYG{o}{=} \PYG{n}{voice\PYGZus{}index}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{sub\PYGZus{}thread}\PYG{o}{.}\PYG{n}{update\PYGZus{}data}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{unnn}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{sub\PYGZus{}thread}\PYG{o}{.}\PYG{n}{start}\PYG{p}{()}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}无声音设备\PYGZsq{}}\PYG{p}{)}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}voice setting\PYGZsq{}}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{unnn}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,}\PYG{n}{data}\PYG{p}{):}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{progressBar}\PYG{o}{.}\PYG{n}{setValue}\PYG{p}{(}\PYG{n+nb}{int}\PYG{p}{(}\PYG{n}{data}\PYG{p}{))}
+    \PYG{k}{def} \PYG{n+nf}{save\PYGZus{}camera\PYGZus{}json}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{c+c1}{\PYGZsh{}用来关闭上面所有的线程，改写json配置文件。}
+        \PYG{c+c1}{\PYGZsh{} tab1\PYGZus{}text、tab2\PYGZus{}text、tab3\PYGZus{}text分别是行为、面部、眼部的摄像头名字，初始内容为读取json文件得到的。}
+        \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}config/db.json\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}r\PYGZdq{}}\PYG{p}{,}\PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}UTF\PYGZhy{}8\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{dbfile\PYGZus{}r}\PYG{p}{:}
+            \PYG{n}{camera\PYGZus{}voice\PYGZus{}name} \PYG{o}{=} \PYG{n}{json}\PYG{o}{.}\PYG{n}{load}\PYG{p}{(}\PYG{n}{dbfile\PYGZus{}r}\PYG{p}{)}
+        \PYG{n}{camera\PYGZus{}voice\PYGZus{}name}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}hd\PYGZus{}camera\PYGZus{}name\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}text}
+        \PYG{n}{camera\PYGZus{}voice\PYGZus{}name}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}face\PYGZus{}camera\PYGZus{}name\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab2\PYGZus{}text}
+        \PYG{n}{camera\PYGZus{}voice\PYGZus{}name}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}eye\PYGZus{}camera\PYGZus{}name\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab3\PYGZus{}text}
+        \PYG{n}{camera\PYGZus{}voice\PYGZus{}name}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}hk\PYGZus{}voice\PYGZus{}name\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab4\PYGZus{}text}
+        \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}config/db.json\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}w\PYGZdq{}}\PYG{p}{,}\PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}UTF\PYGZhy{}8\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{dbfile}\PYG{p}{:}
+            \PYG{n}{json}\PYG{o}{.}\PYG{n}{dump}\PYG{p}{(}\PYG{n}{camera\PYGZus{}voice\PYGZus{}name}\PYG{p}{,}\PYG{n}{dbfile}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{child\PYGZus{}wind\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{False}
+        \PYG{k}{try}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{sub\PYGZus{}thread}\PYG{o}{.}\PYG{n}{vo\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{False}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}success\PYGZsq{}}\PYG{p}{)}
+        \PYG{k}{except}\PYG{p}{:}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}defalt\PYGZsq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{close}\PYG{p}{()}\PYG{c+c1}{\PYGZsh{}关闭该窗口}
+    \PYG{k}{def} \PYG{n+nf}{closeEvent}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{event}\PYG{p}{):}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}关闭窗口\PYGZsq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{child\PYGZus{}wind\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{False}
+        \PYG{k}{try}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{sub\PYGZus{}thread}\PYG{o}{.}\PYG{n}{vo\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{False}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{child\PYGZus{}wind\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{False}
+        \PYG{k}{except}\PYG{p}{:}
+            \PYG{k}{pass}
+\PYG{c+c1}{\PYGZsh{}应该是改变摄像头选项时修改配置文件还是在点确认是关闭呢？ 点确认时关闭，先把选好的信息存起来，点确认时修改。}
+    \PYG{k}{def} \PYG{n+nf}{CreateButtons}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{c+c1}{\PYGZsh{} print(\PYGZdq{}createbuttons\PYGZdq{})}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox}\PYG{o}{.}\PYG{n}{currentIndexChanged}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}setting}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}3}\PYG{o}{.}\PYG{n}{currentIndexChanged}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab2\PYGZus{}combobox\PYGZus{}setting}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}4}\PYG{o}{.}\PYG{n}{currentIndexChanged}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab3\PYGZus{}combobox\PYGZus{}setting}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab1\PYGZus{}combobox\PYGZus{}7}\PYG{o}{.}\PYG{n}{currentIndexChanged}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{tab4\PYGZus{}voice\PYGZus{}setting}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{OK}\PYG{o}{.}\PYG{n}{clicked}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{save\PYGZus{}camera\PYGZus{}json}\PYG{p}{)}
+\end{Verbatim}

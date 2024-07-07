@@ -1,0 +1,6 @@
+
+pyuic5 编译出错
+
+```
+pyuic5 -x child_file.ui -o child_file.py
+```

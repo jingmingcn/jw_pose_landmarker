@@ -1,0 +1,81 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k+kn}{import} \PYG{n+nn}{json}
+\PYG{k+kn}{import} \PYG{n+nn}{time}
+\PYG{k+kn}{from} \PYG{n+nn}{PyQt5.QtWidgets} \PYG{k+kn}{import} \PYG{n}{QWidget}
+\PYG{k+kn}{from} \PYG{n+nn}{PyQt5} \PYG{k+kn}{import} \PYG{n}{QtWidgets}
+\PYG{k+kn}{from} \PYG{n+nn}{CvPyGui.ui} \PYG{k+kn}{import} \PYG{n}{child\PYGZus{}file}
+\PYG{n}{Ui\PYGZus{}ChildWindow\PYGZus{}2} \PYG{o}{=} \PYG{n}{child\PYGZus{}file}\PYG{o}{.}\PYG{n}{Ui\PYGZus{}Form}
+\PYG{k}{class} \PYG{n+nc}{child\PYGZus{}file\PYGZus{}setting}\PYG{p}{(}\PYG{n}{QWidget}\PYG{p}{,}\PYG{n}{Ui\PYGZus{}ChildWindow\PYGZus{}2}\PYG{p}{):}
+    \PYG{c+c1}{\PYGZsh{}功能：选择文件路径。。显示当前的文件路径。。}
+    \PYG{c+c1}{\PYGZsh{}选择音视频保存的格式  是名字的格式还是文件格式？}
+    \PYG{k}{def} \PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n+nb}{super}\PYG{p}{()}\PYG{o}{.}\PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{setupUi}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{InitChildWindwo}\PYG{p}{()}
+    \PYG{k}{def} \PYG{n+nf}{InitChildWindwo}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{c+c1}{\PYGZsh{}初始化，，，读取json文件，显示当前的保存路径}
+        \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}config/db.json\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}r\PYGZdq{}}\PYG{p}{,}\PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}UTF\PYGZhy{}8\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{dbfile\PYGZus{}r}\PYG{p}{:}
+            \PYG{n}{file\PYGZus{}save\PYGZus{}path} \PYG{o}{=} \PYG{n}{json}\PYG{o}{.}\PYG{n}{load}\PYG{p}{(}\PYG{n}{dbfile\PYGZus{}r}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{file\PYGZus{}path\PYGZus{}label}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{n}{file\PYGZus{}save\PYGZus{}path}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}save\PYGZus{}path\PYGZdq{}}\PYG{p}{])}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{CreateButtons}\PYG{p}{()}
+        \PYG{k}{if} \PYG{n}{file\PYGZus{}save\PYGZus{}path}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}video\PYGZus{}format\PYGZdq{}}\PYG{p}{]} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}.avi\PYGZdq{}}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{radioButton\PYGZus{}avi}\PYG{o}{.}\PYG{n}{setChecked}\PYG{p}{(}\PYG{k+kc}{True}\PYG{p}{)}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{radioButton\PYGZus{}mp4}\PYG{o}{.}\PYG{n}{setChecked}\PYG{p}{(}\PYG{k+kc}{True}\PYG{p}{)}
+        \PYG{k}{if} \PYG{n}{file\PYGZus{}save\PYGZus{}path}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}voice\PYGZus{}format\PYGZdq{}}\PYG{p}{]} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}.wav\PYGZdq{}}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{radioButton\PYGZus{}wav}\PYG{o}{.}\PYG{n}{setChecked}\PYG{p}{(}\PYG{k+kc}{True}\PYG{p}{)}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{radioButton\PYGZus{}mp3}\PYG{o}{.}\PYG{n}{setChecked}\PYG{p}{(}\PYG{k+kc}{True}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{msg}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n}{m} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QFileDialog}\PYG{o}{.}\PYG{n}{getExistingDirectory}\PYG{p}{(}\PYG{k+kc}{None}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}选取文件夹\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}C:/\PYGZdq{}}\PYG{p}{)}  \PYG{c+c1}{\PYGZsh{} 起始路径}
+        \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}config/db.json\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}r\PYGZdq{}}\PYG{p}{,}\PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}UTF\PYGZhy{}8\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{file\PYGZus{}r}\PYG{p}{:}
+            \PYG{n}{savepath} \PYG{o}{=} \PYG{n}{json}\PYG{o}{.}\PYG{n}{load}\PYG{p}{(}\PYG{n}{file\PYGZus{}r}\PYG{p}{)}
+        \PYG{c+c1}{\PYGZsh{}原路径保存至former\PYGZus{}save\PYGZus{}path}
+        \PYG{n}{former\PYGZus{}save\PYGZus{}path} \PYG{o}{=} \PYG{n}{savepath}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}save\PYGZus{}path\PYGZdq{}}\PYG{p}{]}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{m}\PYG{p}{)}\PYG{c+c1}{\PYGZsh{}打印刚刚获取的当前路径}
+        \PYG{c+c1}{\PYGZsh{}如果获取的路径为空，就不改变路径，把之前的路径赋给新的路径}
+        \PYG{k}{if} \PYG{n}{m} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}\PYGZdq{}}\PYG{p}{:}
+            \PYG{n}{m} \PYG{o}{=} \PYG{n}{former\PYGZus{}save\PYGZus{}path}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{m}\PYG{p}{)}
+        \PYG{n}{savepath}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}save\PYGZus{}path\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n}{m}
+        \PYG{c+c1}{\PYGZsh{}将更改后（或获取空时不更改）的路径写入json文件}
+        \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}config/db.json\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}w\PYGZdq{}}\PYG{p}{,}\PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}UTF\PYGZhy{}8\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{dbfile}\PYG{p}{:}
+            \PYG{n}{json}\PYG{o}{.}\PYG{n}{dump}\PYG{p}{(}\PYG{n}{savepath}\PYG{p}{,}\PYG{n}{dbfile}\PYG{p}{)}
+        \PYG{n}{time}\PYG{o}{.}\PYG{n}{sleep}\PYG{p}{(}\PYG{l+m+mf}{0.5}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}file\PYGZus{}save\PYGZus{}path}\PYG{p}{()}
+    \PYG{k}{def} \PYG{n+nf}{update\PYGZus{}file\PYGZus{}save\PYGZus{}path}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}config/db.json\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}r\PYGZdq{}}\PYG{p}{,}\PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}UTF\PYGZhy{}8\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{dbfile\PYGZus{}r}\PYG{p}{:}
+            \PYG{n}{file\PYGZus{}save\PYGZus{}path} \PYG{o}{=} \PYG{n}{json}\PYG{o}{.}\PYG{n}{load}\PYG{p}{(}\PYG{n}{dbfile\PYGZus{}r}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{file\PYGZus{}path\PYGZus{}label}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{n+nb}{str}\PYG{p}{(}\PYG{n}{file\PYGZus{}save\PYGZus{}path}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}save\PYGZus{}path\PYGZsq{}}\PYG{p}{]))}
+    \PYG{k}{def} \PYG{n+nf}{ok\PYGZus{}close}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{close}\PYG{p}{()}
+    \PYG{k}{def} \PYG{n+nf}{mp3\PYGZus{}button}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{radioButton\PYGZus{}mp3}\PYG{o}{.}\PYG{n}{isChecked}\PYG{p}{()} \PYG{o}{==} \PYG{k+kc}{True}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voiceformat} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}.mp3\PYGZdq{}}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voiceformat} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}.wav\PYGZdq{}}
+        \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}config/db.json\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}r\PYGZdq{}}\PYG{p}{,}\PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}UTF\PYGZhy{}8\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{dbfile}\PYG{p}{:}
+            \PYG{n}{json\PYGZus{}file} \PYG{o}{=} \PYG{n}{json}\PYG{o}{.}\PYG{n}{load}\PYG{p}{(}\PYG{n}{dbfile}\PYG{p}{)}
+        \PYG{n}{json\PYGZus{}file}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}voice\PYGZus{}format\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voiceformat}
+        \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}config/db.json\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}w\PYGZdq{}}\PYG{p}{,}\PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}UTF\PYGZhy{}8\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{dbfile}\PYG{p}{:}
+            \PYG{n}{json}\PYG{o}{.}\PYG{n}{dump}\PYG{p}{(}\PYG{n}{json\PYGZus{}file}\PYG{p}{,}\PYG{n}{dbfile}\PYG{p}{)}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voiceformat}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{video\PYGZus{}radio\PYGZus{}button}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{radioButton\PYGZus{}mp4}\PYG{o}{.}\PYG{n}{isChecked}\PYG{p}{()} \PYG{o}{==} \PYG{k+kc}{True}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{videoformat} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}.mp4v\PYGZdq{}}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{videoformat} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}.avi\PYGZdq{}}
+        \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}config/db.json\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}r\PYGZdq{}}\PYG{p}{,}\PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}UTF\PYGZhy{}8\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{dbfile}\PYG{p}{:}
+            \PYG{n}{json\PYGZus{}file} \PYG{o}{=} \PYG{n}{json}\PYG{o}{.}\PYG{n}{load}\PYG{p}{(}\PYG{n}{dbfile}\PYG{p}{)}
+        \PYG{n}{json\PYGZus{}file}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}video\PYGZus{}format\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{videoformat}
+        \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}config/db.json\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}w\PYGZdq{}}\PYG{p}{,}\PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}UTF\PYGZhy{}8\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{dbfile}\PYG{p}{:}
+            \PYG{n}{json}\PYG{o}{.}\PYG{n}{dump}\PYG{p}{(}\PYG{n}{json\PYGZus{}file}\PYG{p}{,}\PYG{n}{dbfile}\PYG{p}{)}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{videoformat}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{CreateButtons}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{choice\PYGZus{}file\PYGZus{}path\PYGZus{}button}\PYG{o}{.}\PYG{n}{clicked}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{msg}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{file\PYGZus{}ok}\PYG{o}{.}\PYG{n}{clicked}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{ok\PYGZus{}close}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{radioButton\PYGZus{}mp3}\PYG{o}{.}\PYG{n}{clicked}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{mp3\PYGZus{}button}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{radioButton\PYGZus{}wav}\PYG{o}{.}\PYG{n}{clicked}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{mp3\PYGZus{}button}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{radioButton\PYGZus{}mp4}\PYG{o}{.}\PYG{n}{clicked}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{video\PYGZus{}radio\PYGZus{}button}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{radioButton\PYGZus{}avi}\PYG{o}{.}\PYG{n}{clicked}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{video\PYGZus{}radio\PYGZus{}button}\PYG{p}{)}
+\end{Verbatim}

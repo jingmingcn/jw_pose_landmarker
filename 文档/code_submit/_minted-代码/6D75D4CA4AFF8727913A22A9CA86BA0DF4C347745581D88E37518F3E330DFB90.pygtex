@@ -1,0 +1,23 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k+kn}{from} \PYG{n+nn}{PyQt5.QtGui} \PYG{k+kn}{import} \PYG{o}{*}
+\PYG{k+kn}{from} \PYG{n+nn}{PyQt5.QtWidgets} \PYG{k+kn}{import} \PYG{o}{*}
+\PYG{k+kn}{from} \PYG{n+nn}{PyQt5.QtCore} \PYG{k+kn}{import} \PYG{n}{Qt}
+\PYG{k}{class} \PYG{n+nc}{Image}\PYG{p}{(}\PYG{n}{QWidget}\PYG{p}{):}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Common base for the images\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{k}{def} \PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{name}\PYG{p}{,} \PYG{n}{label}\PYG{p}{):}
+        \PYG{n+nb}{super}\PYG{p}{()}\PYG{o}{.}\PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{frame\PYGZus{}lbl} \PYG{o}{=} \PYG{n}{label}
+        \PYG{n+nb}{print} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{frame\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{size}\PYG{p}{())}
+    \PYG{k}{def} \PYG{n+nf}{updateImage}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{opencv\PYGZus{}rgb\PYGZus{}image}\PYG{p}{):}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cv\PYGZus{}img\PYGZus{}rgb} \PYG{o}{=} \PYG{n}{opencv\PYGZus{}rgb\PYGZus{}image}
+        \PYG{n}{height}\PYG{p}{,} \PYG{n}{width}\PYG{p}{,} \PYG{n}{channel} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cv\PYGZus{}img\PYGZus{}rgb}\PYG{o}{.}\PYG{n}{shape}
+        \PYG{n}{bytesPerLine} \PYG{o}{=} \PYG{l+m+mi}{3} \PYG{o}{*} \PYG{n}{width}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{q\PYGZus{}image} \PYG{o}{=} \PYG{n}{QImage}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cv\PYGZus{}img\PYGZus{}rgb}\PYG{o}{.}\PYG{n}{data}\PYG{p}{,} \PYG{n}{width}\PYG{p}{,}\PYG{n}{height}\PYG{p}{,} \PYG{n}{bytesPerLine}\PYG{p}{,} \PYG{n}{QImage}\PYG{o}{.}\PYG{n}{Format\PYGZus{}RGB888}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{frame\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setPixmap}\PYG{p}{(}\PYG{n}{QPixmap}\PYG{o}{.}\PYG{n}{fromImage}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{q\PYGZus{}image}\PYG{p}{)}\PYG{o}{.}\PYG{n}{scaled}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{frame\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{size}\PYG{p}{(),} \PYG{n}{aspectRatioMode}\PYG{o}{=}\PYG{n}{Qt}\PYG{o}{.}\PYG{n}{KeepAspectRatio}\PYG{p}{))}
+    \PYG{k}{def} \PYG{n+nf}{saveImage}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n+nb}{filter} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}Images (*.png *.jpg)\PYGZdq{}}
+        \PYG{n}{image\PYGZus{}path}\PYG{p}{,} \PYG{n}{\PYGZus{}} \PYG{o}{=} \PYG{n}{QFileDialog}\PYG{o}{.}\PYG{n}{getSaveFileName}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n+nb}{filter}\PYG{o}{=}\PYG{n+nb}{filter}\PYG{p}{)}
+        \PYG{n}{cv\PYGZus{}img\PYGZus{}bgr} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cv\PYGZus{}img\PYGZus{}rgb}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}RGB2BGR}\PYG{p}{)}
+        \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imwrite}\PYG{p}{(}\PYG{n}{image\PYGZus{}path}\PYG{p}{,} \PYG{n}{cv\PYGZus{}img\PYGZus{}bgr}\PYG{p}{)}
+\end{Verbatim}

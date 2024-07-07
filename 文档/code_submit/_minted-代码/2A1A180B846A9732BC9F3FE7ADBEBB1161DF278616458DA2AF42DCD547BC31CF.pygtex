@@ -1,0 +1,18 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k}{if} \PYG{n+nv+vm}{\PYGZus{}\PYGZus{}name\PYGZus{}\PYGZus{}} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}\PYGZus{}\PYGZus{}main\PYGZus{}\PYGZus{}\PYGZsq{}}\PYG{p}{:}
+    \PYG{k+kn}{import} \PYG{n+nn}{sys}\PYG{o}{,}\PYG{n+nn}{platform}
+    \PYG{k+kn}{from} \PYG{n+nn}{PyQt5.QtWidgets} \PYG{k+kn}{import} \PYG{n}{QApplication}
+    \PYG{c+c1}{\PYGZsh{}from CvPyGui import Main}
+    \PYG{k+kn}{from} \PYG{n+nn}{CvPyGui} \PYG{k+kn}{import} \PYG{n}{main} \PYG{k}{as} \PYG{n}{Main}
+    \PYG{k}{if} \PYG{n}{platform}\PYG{o}{.}\PYG{n}{system}\PYG{p}{()} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}Windows\PYGZdq{}}\PYG{p}{:}
+        \PYG{k+kn}{import} \PYG{n+nn}{ctypes}  
+        \PYG{n}{ctypes}\PYG{o}{.}\PYG{n}{windll}\PYG{o}{.}\PYG{n}{shell32}\PYG{o}{.}\PYG{n}{SetCurrentProcessExplicitAppUserModelID}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}myappid\PYGZdq{}}\PYG{p}{)}
+    \PYG{n}{app} \PYG{o}{=} \PYG{n}{QApplication}\PYG{p}{(}\PYG{n}{sys}\PYG{o}{.}\PYG{n}{argv}\PYG{p}{)}
+    \PYG{n}{window} \PYG{o}{=} \PYG{n}{Main}\PYG{o}{.}\PYG{n}{MyApp}\PYG{p}{()}
+    \PYG{n}{window}\PYG{o}{.}\PYG{n}{show}\PYG{p}{()}
+    \PYG{k}{global} \PYG{n}{update1}
+    \PYG{n}{update1} \PYG{o}{=} \PYG{l+m+mi}{0}
+    \PYG{k}{global} \PYG{n}{update2}
+    \PYG{n}{update2} \PYG{o}{=} \PYG{l+m+mi}{0}
+    \PYG{n}{sys}\PYG{o}{.}\PYG{n}{exit}\PYG{p}{(}\PYG{n}{app}\PYG{o}{.}\PYG{n}{exec\PYGZus{}}\PYG{p}{())}
+\end{Verbatim}
