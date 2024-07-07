@@ -1,0 +1,639 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k+kn}{import} \PYG{n+nn}{wave}
+\PYG{k+kn}{import} \PYG{n+nn}{cv2}\PYG{o}{,} \PYG{n+nn}{os}
+\PYG{k+kn}{from} \PYG{n+nn}{PyQt5.QtCore} \PYG{k+kn}{import} \PYG{n}{Qt}\PYG{p}{,}\PYG{n}{QTimer}
+\PYG{k+kn}{from} \PYG{n+nn}{PyQt5.QtWidgets} \PYG{k+kn}{import} \PYG{p}{(}\PYG{n}{QMainWindow}\PYG{p}{,}\PYG{n}{QMessageBox}\PYG{p}{,)}
+\PYG{k+kn}{import} \PYG{n+nn}{threading}
+\PYG{k+kn}{import} \PYG{n+nn}{time}
+\PYG{k+kn}{from} \PYG{n+nn}{CvPyGui} \PYG{k+kn}{import} \PYG{n}{ImageCvQtContainer}
+\PYG{k+kn}{from} \PYG{n+nn}{CvPyGui} \PYG{k+kn}{import} \PYG{n}{child\PYGZus{}CameraVoice\PYGZus{}setting}
+\PYG{k+kn}{from} \PYG{n+nn}{CvPyGui} \PYG{k+kn}{import} \PYG{n}{Child\PYGZus{}File\PYGZus{}Setting}
+\PYG{k+kn}{from} \PYG{n+nn}{CvPyGui.ui} \PYG{k+kn}{import} \PYG{n}{gui}
+\PYG{k+kn}{from} \PYG{n+nn}{datetime} \PYG{k+kn}{import} \PYG{n}{datetime}
+\PYG{k+kn}{import} \PYG{n+nn}{pygame}
+\PYG{k+kn}{import} \PYG{n+nn}{pygame.camera}
+\PYG{k+kn}{import} \PYG{n+nn}{pyaudio}
+
+\PYG{k+kn}{import} \PYG{n+nn}{imutils}
+\PYG{k+kn}{from} \PYG{n+nn}{imutils} \PYG{k+kn}{import} \PYG{n}{face\PYGZus{}utils}
+\PYG{k+kn}{import} \PYG{n+nn}{dlib}
+\PYG{k+kn}{import} \PYG{n+nn}{time}
+\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k}{as} \PYG{n+nn}{np}
+\PYG{k+kn}{from} \PYG{n+nn}{keras.models} \PYG{k+kn}{import} \PYG{n}{load\PYGZus{}model}
+\PYG{k+kn}{from} \PYG{n+nn}{keras.preprocessing.image} \PYG{k+kn}{import} \PYG{n}{img\PYGZus{}to\PYGZus{}array}
+
+\PYG{k+kn}{from} \PYG{n+nn}{PIL} \PYG{k+kn}{import} \PYG{n}{Image}\PYG{p}{,} \PYG{n}{ImageDraw}\PYG{p}{,} \PYG{n}{ImageFont}
+
+\PYG{k+kn}{from} \PYG{n+nn}{mediapipe} \PYG{k+kn}{import} \PYG{n}{solutions}
+\PYG{k+kn}{from} \PYG{n+nn}{mediapipe.framework.formats} \PYG{k+kn}{import} \PYG{n}{landmark\PYGZus{}pb2}
+
+\PYG{c+c1}{\PYGZsh{} STEP 1: Import the necessary modules.}
+\PYG{k+kn}{import} \PYG{n+nn}{mediapipe} \PYG{k}{as} \PYG{n+nn}{mp}
+\PYG{k+kn}{from} \PYG{n+nn}{mediapipe.tasks} \PYG{k+kn}{import} \PYG{n}{python}
+\PYG{k+kn}{from} \PYG{n+nn}{mediapipe.tasks.python} \PYG{k+kn}{import} \PYG{n}{vision}
+
+\PYG{c+c1}{\PYGZsh{} STEP 2: Create an PoseLandmarker object.}
+\PYG{n}{base\PYGZus{}options} \PYG{o}{=} \PYG{n}{python}\PYG{o}{.}\PYG{n}{BaseOptions}\PYG{p}{(}\PYG{n}{model\PYGZus{}asset\PYGZus{}path}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}pose\PYGZus{}landmarker.task\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{options} \PYG{o}{=} \PYG{n}{vision}\PYG{o}{.}\PYG{n}{PoseLandmarkerOptions}\PYG{p}{(}
+    \PYG{n}{base\PYGZus{}options}\PYG{o}{=}\PYG{n}{base\PYGZus{}options}\PYG{p}{,}
+    \PYG{n}{output\PYGZus{}segmentation\PYGZus{}masks}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{)}
+\PYG{n}{detector} \PYG{o}{=} \PYG{n}{vision}\PYG{o}{.}\PYG{n}{PoseLandmarker}\PYG{o}{.}\PYG{n}{create\PYGZus{}from\PYGZus{}options}\PYG{p}{(}\PYG{n}{options}\PYG{p}{)}
+
+\PYG{n}{Ui\PYGZus{}MainWindow} \PYG{o}{=} \PYG{n}{gui}\PYG{o}{.}\PYG{n}{Ui\PYGZus{}MainWindow}
+\PYG{k+kn}{import} \PYG{n+nn}{json}
+\PYG{n}{img\PYGZus{}no\PYGZus{}camera} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imread}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}config/image/no\PYGZus{}camera.jpg\PYGZsq{}}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{IMREAD\PYGZus{}COLOR}\PYG{p}{)}
+\PYG{c+c1}{\PYGZsh{} img\PYGZus{}no\PYGZus{}voice = cv2.imread(\PYGZsq{}config/image/no\PYGZus{}voice.jpg\PYGZsq{}, cv2.IMREAD\PYGZus{}COLOR)}
+\PYG{n}{img\PYGZus{}no\PYGZus{}voice} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imread}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}config/image/no\PYGZus{}camera.jpg\PYGZsq{}}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{IMREAD\PYGZus{}COLOR}\PYG{p}{)}
+\PYG{n}{img\PYGZus{}voice}\PYG{o}{=}\PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imread}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}config/image/voice.jpg\PYGZsq{}}\PYG{p}{,}\PYG{n}{cv2}\PYG{o}{.}\PYG{n}{IMREAD\PYGZus{}COLOR}\PYG{p}{)}
+
+
+\PYG{k}{def} \PYG{n+nf}{preprocess\PYGZus{}face}\PYG{p}{(}\PYG{n}{face}\PYG{p}{):}
+    \PYG{n}{face} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{face}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}BGR2GRAY}\PYG{p}{)}  \PYG{c+c1}{\PYGZsh{} Convert to grayscale}
+    \PYG{n}{face} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{resize}\PYG{p}{(}\PYG{n}{face}\PYG{p}{,} \PYG{p}{(}\PYG{l+m+mi}{64}\PYG{p}{,} \PYG{l+m+mi}{64}\PYG{p}{))}  \PYG{c+c1}{\PYGZsh{} Resize to the required size}
+    \PYG{n}{face} \PYG{o}{=} \PYG{n}{face}\PYG{o}{.}\PYG{n}{astype}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}float\PYGZdq{}}\PYG{p}{)} \PYG{o}{/} \PYG{l+m+mf}{255.0}  \PYG{c+c1}{\PYGZsh{} Normalize pixel values}
+    \PYG{n}{face} \PYG{o}{=} \PYG{n}{img\PYGZus{}to\PYGZus{}array}\PYG{p}{(}\PYG{n}{face}\PYG{p}{)}
+    \PYG{n}{face} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{expand\PYGZus{}dims}\PYG{p}{(}\PYG{n}{face}\PYG{p}{,} \PYG{n}{axis}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{)}
+    \PYG{k}{return} \PYG{n}{face}
+
+\PYG{k}{def} \PYG{n+nf}{cv2PutText}\PYG{p}{(}\PYG{n}{img}\PYG{p}{,} \PYG{n}{text}\PYG{p}{,} \PYG{n}{postion}\PYG{p}{,} \PYG{n}{textColor}\PYG{o}{=}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{l+m+mi}{255}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{),} \PYG{n}{textSize}\PYG{o}{=}\PYG{l+m+mi}{30}\PYG{p}{):}
+    \PYG{k}{if} \PYG{p}{(}\PYG{n+nb}{isinstance}\PYG{p}{(}\PYG{n}{img}\PYG{p}{,}\PYG{n}{np}\PYG{o}{.}\PYG{n}{ndarray}\PYG{p}{)):}
+        \PYG{n}{img} \PYG{o}{=} \PYG{n}{Image}\PYG{o}{.}\PYG{n}{fromarray}\PYG{p}{(}\PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{img}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}BGR2RGB}\PYG{p}{))}
+
+    \PYG{n}{draw} \PYG{o}{=} \PYG{n}{ImageDraw}\PYG{o}{.}\PYG{n}{Draw}\PYG{p}{(}\PYG{n}{img}\PYG{p}{)}
+    \PYG{n}{font} \PYG{o}{=} \PYG{n}{ImageFont}\PYG{o}{.}\PYG{n}{truetype}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}font/simsun.ttc\PYGZdq{}}\PYG{p}{,} \PYG{n}{textSize}\PYG{p}{,} \PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}utf\PYGZhy{}8\PYGZdq{}}\PYG{p}{)}
+    \PYG{n}{draw}\PYG{o}{.}\PYG{n}{text}\PYG{p}{(}\PYG{n}{postion}\PYG{p}{,} \PYG{n}{text}\PYG{p}{,} \PYG{n}{textColor}\PYG{p}{,} \PYG{n}{font}\PYG{o}{=}\PYG{n}{font}\PYG{p}{)}
+    \PYG{n}{img} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{asarray}\PYG{p}{(}\PYG{n}{img}\PYG{p}{),} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}RGB2BGR}\PYG{p}{)}
+    \PYG{k}{return} \PYG{n}{img}
+
+\PYG{k}{def} \PYG{n+nf}{draw\PYGZus{}landmarks\PYGZus{}on\PYGZus{}image}\PYG{p}{(}\PYG{n}{rgb\PYGZus{}image}\PYG{p}{,} \PYG{n}{detection\PYGZus{}result}\PYG{p}{):}
+  \PYG{n}{pose\PYGZus{}landmarks\PYGZus{}list} \PYG{o}{=} \PYG{n}{detection\PYGZus{}result}\PYG{o}{.}\PYG{n}{pose\PYGZus{}landmarks}
+  \PYG{n}{annotated\PYGZus{}image} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{copy}\PYG{p}{(}\PYG{n}{rgb\PYGZus{}image}\PYG{p}{)}
+
+  \PYG{c+c1}{\PYGZsh{} Loop through the detected poses to visualize.}
+  \PYG{k}{for} \PYG{n}{idx} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{pose\PYGZus{}landmarks\PYGZus{}list}\PYG{p}{)):}
+    \PYG{n}{pose\PYGZus{}landmarks} \PYG{o}{=} \PYG{n}{pose\PYGZus{}landmarks\PYGZus{}list}\PYG{p}{[}\PYG{n}{idx}\PYG{p}{]}
+
+    \PYG{c+c1}{\PYGZsh{} Draw the pose landmarks.}
+    \PYG{n}{pose\PYGZus{}landmarks\PYGZus{}proto} \PYG{o}{=} \PYG{n}{landmark\PYGZus{}pb2}\PYG{o}{.}\PYG{n}{NormalizedLandmarkList}\PYG{p}{()}
+    \PYG{n}{pose\PYGZus{}landmarks\PYGZus{}proto}\PYG{o}{.}\PYG{n}{landmark}\PYG{o}{.}\PYG{n}{extend}\PYG{p}{([}
+      \PYG{n}{landmark\PYGZus{}pb2}\PYG{o}{.}\PYG{n}{NormalizedLandmark}\PYG{p}{(}\PYG{n}{x}\PYG{o}{=}\PYG{n}{landmark}\PYG{o}{.}\PYG{n}{x}\PYG{p}{,} \PYG{n}{y}\PYG{o}{=}\PYG{n}{landmark}\PYG{o}{.}\PYG{n}{y}\PYG{p}{,} \PYG{n}{z}\PYG{o}{=}\PYG{n}{landmark}\PYG{o}{.}\PYG{n}{z}\PYG{p}{)} \PYG{k}{for} \PYG{n}{landmark} \PYG{o+ow}{in} \PYG{n}{pose\PYGZus{}landmarks}
+    \PYG{p}{])}
+    \PYG{n}{solutions}\PYG{o}{.}\PYG{n}{drawing\PYGZus{}utils}\PYG{o}{.}\PYG{n}{draw\PYGZus{}landmarks}\PYG{p}{(}
+      \PYG{n}{annotated\PYGZus{}image}\PYG{p}{,}
+      \PYG{n}{pose\PYGZus{}landmarks\PYGZus{}proto}\PYG{p}{,}
+      \PYG{n}{solutions}\PYG{o}{.}\PYG{n}{pose}\PYG{o}{.}\PYG{n}{POSE\PYGZus{}CONNECTIONS}\PYG{p}{,}
+      \PYG{n}{solutions}\PYG{o}{.}\PYG{n}{drawing\PYGZus{}styles}\PYG{o}{.}\PYG{n}{get\PYGZus{}default\PYGZus{}pose\PYGZus{}landmarks\PYGZus{}style}\PYG{p}{())}
+  \PYG{k}{return} \PYG{n}{annotated\PYGZus{}image}
+
+\PYG{k}{class} \PYG{n+nc}{MyApp}\PYG{p}{(}\PYG{n}{QMainWindow}\PYG{p}{,} \PYG{n}{Ui\PYGZus{}MainWindow}\PYG{p}{,} \PYG{n}{threading}\PYG{o}{.}\PYG{n}{Thread}\PYG{p}{):}
+    \PYG{n}{filter\PYGZus{}count} \PYG{o}{=} \PYG{l+m+mi}{0}
+    \PYG{k}{def} \PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,}\PYG{n}{chunk}\PYG{o}{=}\PYG{l+m+mi}{1024}\PYG{p}{,} \PYG{n}{rate}\PYG{o}{=}\PYG{l+m+mi}{16000}\PYG{p}{):}
+        \PYG{n+nb}{super}\PYG{p}{()}\PYG{o}{.}\PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{()}
+        \PYG{n}{threading}\PYG{o}{.}\PYG{n}{Thread}\PYG{o}{.}\PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{)}
+        \PYG{n}{QMainWindow}\PYG{o}{.}\PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{)}
+        \PYG{n}{Ui\PYGZus{}MainWindow}\PYG{o}{.}\PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{setupUi}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{initUI}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}camera}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}width} \PYG{o}{=} \PYG{l+m+mi}{1920}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}height} \PYG{o}{=} \PYG{l+m+mi}{1080}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}width} \PYG{o}{=} \PYG{l+m+mi}{1280}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}width} \PYG{o}{=} \PYG{l+m+mi}{1280}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}height} \PYG{o}{=} \PYG{l+m+mi}{1920}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}height} \PYG{o}{=} \PYG{l+m+mi}{720}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}fps} \PYG{o}{=} \PYG{l+m+mf}{30.0}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}fps} \PYG{o}{=} \PYG{l+m+mf}{10.0}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}fps} \PYG{o}{=} \PYG{l+m+mf}{10.0}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{CHUNK} \PYG{o}{=} \PYG{n}{chunk}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{FORMAT} \PYG{o}{=} \PYG{n}{pyaudio}\PYG{o}{.}\PYG{n}{paInt16}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{CHANNELS} \PYG{o}{=} \PYG{l+m+mi}{1}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{RATE} \PYG{o}{=} \PYG{n}{rate}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}win1\PYGZus{}running} \PYG{o}{=} \PYG{k+kc}{True}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}win2\PYGZus{}running} \PYG{o}{=} \PYG{k+kc}{True}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}win3\PYGZus{}running} \PYG{o}{=} \PYG{k+kc}{True}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}voice\PYGZus{}get} \PYG{o}{=} \PYG{k+kc}{True}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}begin} \PYG{o}{=} \PYG{k+kc}{False}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}frames} \PYG{o}{=} \PYG{p}{[]}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}init\PYGZus{}running} \PYG{o}{=} \PYG{k+kc}{True}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}start\PYGZus{}running} \PYG{o}{=} \PYG{k+kc}{True}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{record\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{False}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{recording\PYGZus{}time} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}0\PYGZsq{}}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{recording\PYGZus{}location} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}record/\PYGZsq{}}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{recording\PYGZus{}information} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{recording\PYGZus{}time} \PYG{o}{+} \PYG{l+s+s1}{\PYGZsq{}  \PYGZsq{}} \PYG{o}{+} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{recording\PYGZus{}location}
+    \PYG{k}{def} \PYG{n+nf}{initUI}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original1\PYGZus{}image} \PYG{o}{=} \PYG{n}{ImageCvQtContainer}\PYG{o}{.}\PYG{n}{Image}\PYG{p}{(}
+            \PYG{l+s+s1}{\PYGZsq{}camera1\PYGZsq{}}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original\PYGZus{}frame\PYGZus{}lbl}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original2\PYGZus{}image} \PYG{o}{=} \PYG{n}{ImageCvQtContainer}\PYG{o}{.}\PYG{n}{Image}\PYG{p}{(}
+            \PYG{l+s+s1}{\PYGZsq{}camera2\PYGZsq{}}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{processed\PYGZus{}frame\PYGZus{}lbl}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}image} \PYG{o}{=} \PYG{n}{ImageCvQtContainer}\PYG{o}{.}\PYG{n}{Image}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}eye\PYGZus{}camera\PYGZsq{}}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}lbl}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}image} \PYG{o}{=} \PYG{n}{ImageCvQtContainer}\PYG{o}{.}\PYG{n}{Image}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}voice\PYGZus{}mic\PYGZsq{}}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}lbl}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{setBackground}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{createButtons}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{Child\PYGZus{}File\PYGZus{}Setting}\PYG{p}{()}
+    \PYG{k}{def} \PYG{n+nf}{r\PYGZus{}json}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{c+c1}{\PYGZsh{}读取配置文件}
+        \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}config/db.json\PYGZsq{}}\PYG{p}{,}\PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}utf\PYGZhy{}8\PYGZsq{}}\PYG{p}{,}\PYG{n}{mode}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}r\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{rf}\PYG{p}{:}
+            \PYG{n}{data} \PYG{o}{=} \PYG{n}{rf}\PYG{o}{.}\PYG{n}{read}\PYG{p}{()}\PYG{o}{.}\PYG{n}{encode}\PYG{p}{()}
+            \PYG{n}{configuration} \PYG{o}{=} \PYG{n}{json}\PYG{o}{.}\PYG{n}{loads}\PYG{p}{(}\PYG{n}{data}\PYG{p}{)}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}configuation\PYGZsq{}}\PYG{p}{)}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{configuration}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}cream\PYGZus{}name}\PYG{o}{=}\PYG{n}{configuration}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}hd\PYGZus{}camera\PYGZus{}name\PYGZsq{}}\PYG{p}{]}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera\PYGZus{}name}\PYG{o}{=}\PYG{n}{configuration}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}face\PYGZus{}camera\PYGZus{}name\PYGZsq{}}\PYG{p}{]}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera\PYGZus{}name}\PYG{o}{=}\PYG{n}{configuration}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}eye\PYGZus{}camera\PYGZus{}name\PYGZsq{}}\PYG{p}{]}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{vocie\PYGZus{}name}\PYG{o}{=}\PYG{n}{configuration}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}voice\PYGZus{}name\PYGZsq{}}\PYG{p}{]}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hk\PYGZus{}voice\PYGZus{}name}\PYG{o}{=}\PYG{n}{configuration}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}hk\PYGZus{}voice\PYGZus{}name\PYGZsq{}}\PYG{p}{]}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{bluetooth\PYGZus{}voice\PYGZus{}name}\PYG{o}{=}\PYG{n}{configuration}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}bluetooth\PYGZus{}voice\PYGZus{}name\PYGZsq{}}\PYG{p}{]}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{save\PYGZus{}path}\PYG{o}{=}\PYG{n}{configuration}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}save\PYGZus{}path\PYGZsq{}}\PYG{p}{]}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}width}\PYG{o}{=}\PYG{n}{configuration}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}hd\PYGZus{}width\PYGZsq{}}\PYG{p}{]}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}height}\PYG{o}{=}\PYG{n}{configuration}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}hd\PYGZus{}height\PYGZsq{}}\PYG{p}{]}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}fps}\PYG{o}{=}\PYG{n}{configuration}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}hd\PYGZus{}fps\PYGZsq{}}\PYG{p}{]}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}width}\PYG{o}{=}\PYG{n}{configuration}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}face\PYGZus{}width\PYGZsq{}}\PYG{p}{]}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}height}\PYG{o}{=}\PYG{n}{configuration}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}face\PYGZus{}height\PYGZsq{}}\PYG{p}{]}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}fps}\PYG{o}{=}\PYG{n}{configuration}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}face\PYGZus{}fps\PYGZsq{}}\PYG{p}{]}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}width}\PYG{o}{=}\PYG{n}{configuration}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}eye\PYGZus{}width\PYGZsq{}}\PYG{p}{]}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}height}\PYG{o}{=}\PYG{n}{configuration}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}eye\PYGZus{}height\PYGZsq{}}\PYG{p}{]}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}fps}\PYG{o}{=}\PYG{n}{configuration}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}eye\PYGZus{}fps\PYGZsq{}}\PYG{p}{]}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}format} \PYG{o}{=} \PYG{n}{configuration}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}voice\PYGZus{}format\PYGZsq{}}\PYG{p}{]}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{video\PYGZus{}format} \PYG{o}{=} \PYG{n}{configuration}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}video\PYGZus{}format\PYGZsq{}}\PYG{p}{]}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{recorfing\PYGZus{}location} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{save\PYGZus{}path}
+    \PYG{k}{def} \PYG{n+nf}{initfrom}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}init\PYGZus{}running}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}init\PYGZus{}running}\PYG{o}{=}\PYG{k+kc}{False}
+            \PYG{n}{pygame}\PYG{o}{.}\PYG{n}{init}\PYG{p}{()}
+            \PYG{n}{pygame}\PYG{o}{.}\PYG{n}{camera}\PYG{o}{.}\PYG{n}{init}\PYG{p}{()}
+            \PYG{n}{cameralist} \PYG{o}{=} \PYG{n}{pygame}\PYG{o}{.}\PYG{n}{camera}\PYG{o}{.}\PYG{n}{list\PYGZus{}cameras}\PYG{p}{()}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{cameralist}\PYG{p}{)}
+            \PYG{n}{p} \PYG{o}{=} \PYG{n}{pyaudio}\PYG{o}{.}\PYG{n}{PyAudio}\PYG{p}{()}
+            \PYG{n}{info} \PYG{o}{=} \PYG{n}{p}\PYG{o}{.}\PYG{n}{get\PYGZus{}host\PYGZus{}api\PYGZus{}info\PYGZus{}by\PYGZus{}index}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{)}
+            \PYG{n}{numdevices} \PYG{o}{=} \PYG{n}{info}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}deviceCount\PYGZsq{}}\PYG{p}{)}
+            \PYG{n}{voice\PYGZus{}list} \PYG{o}{=} \PYG{p}{[]}
+            \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{numdevices}\PYG{p}{):}
+                \PYG{k}{if} \PYG{p}{(}\PYG{n}{p}\PYG{o}{.}\PYG{n}{get\PYGZus{}device\PYGZus{}info\PYGZus{}by\PYGZus{}host\PYGZus{}api\PYGZus{}device\PYGZus{}index}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{i}\PYG{p}{)}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}maxInputChannels\PYGZsq{}}\PYG{p}{))} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}\PYG{p}{:}
+                    \PYG{n}{voice\PYGZus{}list}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{p}\PYG{o}{.}\PYG{n}{get\PYGZus{}device\PYGZus{}info\PYGZus{}by\PYGZus{}host\PYGZus{}api\PYGZus{}device\PYGZus{}index}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{i}\PYG{p}{)}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}name\PYGZsq{}}\PYG{p}{))}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{voice\PYGZus{}list}\PYG{p}{)}
+            \PYG{k}{try}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{r\PYGZus{}json}\PYG{p}{()}
+            \PYG{k}{except}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{showMessage}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}未找到配置文件\PYGZsq{}}\PYG{p}{,}\PYG{l+m+mi}{5000}\PYG{p}{)}
+            \PYG{k}{try}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}camera}\PYG{o}{=}\PYG{n}{cameralist}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}cream\PYGZus{}name}\PYG{p}{)}
+            \PYG{k}{except}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}camera}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}
+            \PYG{k}{try}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera}\PYG{o}{=}\PYG{n}{cameralist}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera\PYGZus{}name}\PYG{p}{)}
+            \PYG{k}{except}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}
+            \PYG{k}{try}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera}\PYG{o}{=}\PYG{n}{cameralist}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera\PYGZus{}name}\PYG{p}{)}
+            \PYG{k}{except}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}
+            \PYG{k}{try}\PYG{p}{:}
+                \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hk\PYGZus{}voice\PYGZus{}name} \PYG{o+ow}{in} \PYG{n}{voice\PYGZus{}list}\PYG{p}{:}
+                    \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index} \PYG{o}{=} \PYG{n}{voice\PYGZus{}list}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hk\PYGZus{}voice\PYGZus{}name}\PYG{p}{)}
+                \PYG{k}{else}\PYG{p}{:}
+                    \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{vocie\PYGZus{}name} \PYG{o+ow}{in} \PYG{n}{voice\PYGZus{}list} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{bluetooth\PYGZus{}voice\PYGZus{}name} \PYG{o+ow}{in} \PYG{n}{voice\PYGZus{}list}\PYG{p}{:}
+                        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index}\PYG{o}{=}\PYG{n}{voice\PYGZus{}list}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{vocie\PYGZus{}name}\PYG{p}{)}
+                        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{CHANNELS}\PYG{o}{=}\PYG{l+m+mi}{2}
+                    \PYG{k}{elif} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{vocie\PYGZus{}name} \PYG{o+ow}{in} \PYG{n}{voice\PYGZus{}list} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{bluetooth\PYGZus{}voice\PYGZus{}name} \PYG{o+ow}{not} \PYG{o+ow}{in} \PYG{n}{voice\PYGZus{}list}\PYG{p}{:}
+                        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index}\PYG{o}{=}\PYG{n}{voice\PYGZus{}list}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{vocie\PYGZus{}name}\PYG{p}{)}
+                        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{CHANNELS}\PYG{o}{=}\PYG{l+m+mi}{2}
+                    \PYG{k}{elif} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{vocie\PYGZus{}name} \PYG{o+ow}{not} \PYG{o+ow}{in} \PYG{n}{voice\PYGZus{}list} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{bluetooth\PYGZus{}voice\PYGZus{}name} \PYG{o+ow}{in} \PYG{n}{voice\PYGZus{}list}\PYG{p}{:}
+                        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index}\PYG{o}{=}\PYG{n}{voice\PYGZus{}list}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{bluetooth\PYGZus{}voice\PYGZus{}name}\PYG{p}{)}
+                    \PYG{k}{else}\PYG{p}{:}
+                        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index} \PYG{o}{=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}
+            \PYG{k}{except}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}camera}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}行为设备index\PYGZsq{}}\PYG{p}{)}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}面部设备index\PYGZsq{}}\PYG{p}{)}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}眼部设备index\PYGZsq{}}\PYG{p}{)}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}音频设备index\PYGZsq{}}\PYG{p}{)}
+            \PYG{k}{if} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{exists}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{save\PYGZus{}path}\PYG{p}{)} \PYG{o+ow}{is} \PYG{k+kc}{False}\PYG{p}{:}
+                \PYG{n}{os}\PYG{o}{.}\PYG{n}{makedirs}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{save\PYGZus{}path}\PYG{p}{)}
+            \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}camera} \PYG{o}{==} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera} \PYG{o}{==} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera} \PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index} \PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{showMessage}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}未检测到任何可用设备\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{5000}\PYG{p}{)}
+            \PYG{k}{elif} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera} \PYG{o}{==} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera} \PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index} \PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{showMessage}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}未检测到面部、眼部、音频设备\PYGZsq{}}\PYG{p}{,}\PYG{l+m+mi}{5000}\PYG{p}{)}
+            \PYG{k}{elif} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}camera} \PYG{o}{==} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera} \PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index} \PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{showMessage}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}未检测到行为、眼部、音频设备\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{5000}\PYG{p}{)}
+            \PYG{k}{elif} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}camera} \PYG{o}{==} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera} \PYG{o}{==} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera} \PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index} \PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{showMessage}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}未检测到行为、面部、音频设备\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{5000}\PYG{p}{)}
+            \PYG{k}{elif} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}camera} \PYG{o}{==} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera} \PYG{o}{==} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera} \PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index} \PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{showMessage}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}未检测到行为、面部、眼部设备\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{5000}\PYG{p}{)}
+            \PYG{k}{elif} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera} \PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index} \PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{showMessage}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}未检测到眼部、音频设备\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{5000}\PYG{p}{)}
+            \PYG{k}{elif} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera} \PYG{o}{==} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera} \PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index} \PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{showMessage}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}未检测到面部、音频设备\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{5000}\PYG{p}{)}
+            \PYG{k}{elif} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera} \PYG{o}{==} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera} \PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index} \PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{showMessage}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}未检测到面部、眼部设备\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{5000}\PYG{p}{)}
+            \PYG{k}{elif} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}camera} \PYG{o}{==} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera} \PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index} \PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{showMessage}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}未检测到行为、音频设备\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{5000}\PYG{p}{)}
+            \PYG{k}{elif} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}camera} \PYG{o}{==} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera} \PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index} \PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{showMessage}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}未检测到行为、眼部设备\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{5000}\PYG{p}{)}
+            \PYG{k}{elif} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}camera} \PYG{o}{==} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera} \PYG{o}{==} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera} \PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index} \PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{showMessage}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}未检测到行为、面部设备\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{5000}\PYG{p}{)}
+            \PYG{k}{elif} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera} \PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index} \PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{showMessage}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}未检测到眼部设备\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{5000}\PYG{p}{)}
+            \PYG{k}{elif} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera} \PYG{o}{==} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera} \PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index} \PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{showMessage}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}未检测到面部设备\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{5000}\PYG{p}{)}
+            \PYG{k}{elif} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}camera} \PYG{o}{==} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera} \PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index} \PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{showMessage}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}未检测到行为设备\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{5000}\PYG{p}{)}
+            \PYG{k}{elif} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera} \PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index} \PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{showMessage}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}未检测到音频设备\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{5000}\PYG{p}{)}
+            \PYG{k}{else}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{showMessage}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}所有设备准备就绪\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{5000}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{start}\PYG{p}{()}
+            \PYG{c+c1}{\PYGZsh{} self.win\PYGZus{}4\PYGZus{}upimage()}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{k}{pass}
+    \PYG{k}{def} \PYG{n+nf}{child\PYGZus{}CameraVoice\PYGZus{}setting}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}\PYG{c+c1}{\PYGZsh{}点击此选项时不能处于以下状态：  录制视频中。}
+        \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}init\PYGZus{}running} \PYG{o}{==} \PYG{k+kc}{False}\PYG{p}{:}
+            \PYG{n}{QMessageBox}\PYG{o}{.}\PYG{n}{information}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}警告\PYGZsq{}}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}进程未中止，请中止进程再点击此选项！\PYGZsq{}}\PYG{p}{)}
+        \PYG{k}{else}\PYG{p}{:}
+        \PYG{c+c1}{\PYGZsh{}结束录制}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{endRe}\PYG{p}{()}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{f\PYGZus{}p}\PYG{p}{()}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{Child\PYGZus{}window} \PYG{o}{=} \PYG{n}{child\PYGZus{}CameraVoice\PYGZus{}setting}\PYG{o}{.}\PYG{n}{Child\PYGZus{}Window}\PYG{p}{()}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{Child\PYGZus{}window}\PYG{o}{.}\PYG{n}{setWindowModality}\PYG{p}{(}\PYG{n}{Qt}\PYG{o}{.}\PYG{n}{ApplicationModal}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{Child\PYGZus{}window}\PYG{o}{.}\PYG{n}{show}\PYG{p}{()}
+    \PYG{k}{def} \PYG{n+nf}{Child\PYGZus{}File\PYGZus{}Setting}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{c+c1}{\PYGZsh{}因为打开软件时便会调用该函数，所以不能调用下面两个方法}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{child\PYGZus{}file\PYGZus{}window} \PYG{o}{=} \PYG{n}{Child\PYGZus{}File\PYGZus{}Setting}\PYG{o}{.}\PYG{n}{child\PYGZus{}file\PYGZus{}setting}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{child\PYGZus{}file\PYGZus{}window}\PYG{o}{.}\PYG{n}{setWindowModality}\PYG{p}{(}\PYG{n}{Qt}\PYG{o}{.}\PYG{n}{ApplicationModal}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{child\PYGZus{}file\PYGZus{}window}\PYG{o}{.}\PYG{n}{show}\PYG{p}{()}
+    \PYG{k}{def} \PYG{n+nf}{start}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n}{threading}\PYG{o}{.}\PYG{n}{\PYGZus{}start\PYGZus{}new\PYGZus{}thread}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{win\PYGZus{}1}\PYG{p}{,())}
+        \PYG{c+c1}{\PYGZsh{} threading.\PYGZus{}start\PYGZus{}new\PYGZus{}thread(self.win\PYGZus{}2,())}
+        \PYG{c+c1}{\PYGZsh{} threading.\PYGZus{}start\PYGZus{}new\PYGZus{}thread(self.win\PYGZus{}3,())}
+    \PYG{k}{def} \PYG{n+nf}{win\PYGZus{}1}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}win1\PYGZus{}running}\PYG{o}{=}\PYG{k+kc}{True}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap1} \PYG{o}{=} \PYG{l+m+mi}{0}
+            \PYG{c+c1}{\PYGZsh{} self.cap1 = cv2.VideoCapture(self.hd\PYGZus{}camera,cv2.CAP\PYGZus{}DSHOW)}
+            \PYG{c+c1}{\PYGZsh{} self.cap1 = cv2.VideoCapture(self.hd\PYGZus{}camera)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap1} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{VideoCapture}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}elder\PYGZus{}dance.avi\PYGZdq{}}\PYG{p}{)}
+            \PYG{c+c1}{\PYGZsh{} self.cap1.set(3,2560)}
+            \PYG{c+c1}{\PYGZsh{} self.cap1.set(4,1440)}
+            \PYG{c+c1}{\PYGZsh{} self.cap1.set(5,self.hd\PYGZus{}fps)}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap1}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{))}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap1}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{))}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap1\PYGZus{}3} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap1}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{)}  \PYG{c+c1}{\PYGZsh{} 宽}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap1\PYGZus{}4} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap1}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{)}  \PYG{c+c1}{\PYGZsh{} 高}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}width} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap1\PYGZus{}3}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}height} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap1\PYGZus{}4}
+            \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}config/db.json\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}r\PYGZdq{}}\PYG{p}{,} \PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}UTF\PYGZhy{}8\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{dbfile\PYGZus{}r\PYGZus{}hd}\PYG{p}{:}
+                \PYG{n}{jsonfile\PYGZus{}hd} \PYG{o}{=} \PYG{n}{json}\PYG{o}{.}\PYG{n}{load}\PYG{p}{(}\PYG{n}{dbfile\PYGZus{}r\PYGZus{}hd}\PYG{p}{)}
+            \PYG{n}{jsonfile\PYGZus{}hd}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}hd\PYGZus{}width\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}width}
+            \PYG{n}{jsonfile\PYGZus{}hd}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}hd\PYGZus{}height\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}height}
+            \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera\PYGZus{}name} \PYG{o}{==} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}cream\PYGZus{}name}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}width} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap1\PYGZus{}3}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}height} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap1\PYGZus{}4}
+                \PYG{n}{jsonfile\PYGZus{}hd}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}face\PYGZus{}width\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}width}
+                \PYG{n}{jsonfile\PYGZus{}hd}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}face\PYGZus{}height\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}height}
+            \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}cream\PYGZus{}name} \PYG{o}{==} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera\PYGZus{}name}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}width} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap1\PYGZus{}3}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}height} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap1\PYGZus{}4}
+                \PYG{n}{jsonfile\PYGZus{}hd}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}eye\PYGZus{}width\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}width}
+                \PYG{n}{jsonfile\PYGZus{}hd}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}eye\PYGZus{}height\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}height}
+                \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}toooooo\PYGZsq{}}\PYG{p}{)}
+            \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}config/db.json\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}w\PYGZdq{}}\PYG{p}{,} \PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}UTF\PYGZhy{}8\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{dbfile\PYGZus{}hd}\PYG{p}{:}
+                \PYG{n}{json}\PYG{o}{.}\PYG{n}{dump}\PYG{p}{(}\PYG{n}{jsonfile\PYGZus{}hd}\PYG{p}{,} \PYG{n}{dbfile\PYGZus{}hd}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap1}\PYG{o}{.}\PYG{n}{set}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}width}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap1}\PYG{o}{.}\PYG{n}{set}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}width}\PYG{p}{)}
+
+            \PYG{k}{while} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}win1\PYGZus{}running}\PYG{p}{:}
+                    \PYG{n}{ret}\PYG{p}{,} \PYG{n}{frame} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap1}\PYG{o}{.}\PYG{n}{read}\PYG{p}{()}
+                    \PYG{k}{if} \PYG{n}{ret}\PYG{p}{:}
+                        \PYG{n}{frame} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{frame}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}BGR2RGB}\PYG{p}{)}
+                        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original1\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{frame}\PYG{p}{)}
+
+                        \PYG{n}{mp\PYGZus{}image} \PYG{o}{=} \PYG{n}{mp}\PYG{o}{.}\PYG{n}{Image}\PYG{p}{(}\PYG{n}{image\PYGZus{}format}\PYG{o}{=}\PYG{n}{mp}\PYG{o}{.}\PYG{n}{ImageFormat}\PYG{o}{.}\PYG{n}{SRGB}\PYG{p}{,} \PYG{n}{data}\PYG{o}{=}\PYG{n}{frame}\PYG{p}{)}
+
+                        \PYG{c+c1}{\PYGZsh{} STEP 4: Detect pose landmarks from the input image.}
+                        \PYG{n}{detection\PYGZus{}result} \PYG{o}{=} \PYG{n}{detector}\PYG{o}{.}\PYG{n}{detect}\PYG{p}{(}\PYG{n}{mp\PYGZus{}image}\PYG{p}{)}
+
+                        \PYG{n}{blank\PYGZus{}image} \PYG{o}{=} \PYG{n}{frame}\PYG{o}{.}\PYG{n}{copy}\PYG{p}{()}
+                        \PYG{n}{blank\PYGZus{}image}\PYG{o}{.}\PYG{n}{fill}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{)}
+                        \PYG{c+c1}{\PYGZsh{} STEP 5: Process the detection result. In this case, visualize it.}
+                        \PYG{n}{annotated\PYGZus{}image} \PYG{o}{=} \PYG{n}{draw\PYGZus{}landmarks\PYGZus{}on\PYGZus{}image}\PYG{p}{(}\PYG{n}{frame}\PYG{p}{,} \PYG{n}{detection\PYGZus{}result}\PYG{p}{)}
+                        \PYG{n}{blank\PYGZus{}image} \PYG{o}{=} \PYG{n}{draw\PYGZus{}landmarks\PYGZus{}on\PYGZus{}image}\PYG{p}{(}\PYG{n}{blank\PYGZus{}image}\PYG{p}{,} \PYG{n}{detection\PYGZus{}result}\PYG{p}{)}
+                        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{annotated\PYGZus{}image}\PYG{p}{)}
+                        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original2\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{blank\PYGZus{}image}\PYG{p}{)}
+
+                        \PYG{n}{visualized\PYGZus{}mask} \PYG{o}{=} \PYG{k+kc}{None}
+                        \PYG{k}{if} \PYG{n}{detection\PYGZus{}result}\PYG{o}{.}\PYG{n}{segmentation\PYGZus{}masks} \PYG{o+ow}{is} \PYG{o+ow}{not} \PYG{k+kc}{None}\PYG{p}{:}
+                            \PYG{n}{rgb} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{detection\PYGZus{}result}\PYG{o}{.}\PYG{n}{segmentation\PYGZus{}masks}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{.}\PYG{n}{numpy\PYGZus{}view}\PYG{p}{(),} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}GRAY2RGB}\PYG{p}{)}
+                            \PYG{n}{rgb} \PYG{o}{=} \PYG{n}{rgb} \PYG{o}{*} \PYG{l+m+mi}{255}
+                            \PYG{n}{rgb} \PYG{o}{=} \PYG{n}{rgb}\PYG{o}{.}\PYG{n}{astype}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{uint8}\PYG{p}{)}
+                            \PYG{n}{visualized\PYGZus{}mask} \PYG{o}{=} \PYG{n}{rgb}
+                        \PYG{k}{else}\PYG{p}{:}
+                            \PYG{n}{black} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{(}\PYG{n}{frame}\PYG{o}{.}\PYG{n}{shape}\PYG{p}{,} \PYG{n}{dtype}\PYG{o}{=}\PYG{n}{np}\PYG{o}{.}\PYG{n}{uint8}\PYG{p}{)}
+                            \PYG{n}{visualized\PYGZus{}mask} \PYG{o}{=} \PYG{n}{black}
+
+                        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{visualized\PYGZus{}mask}\PYG{p}{)}
+
+                            \PYG{c+c1}{\PYGZsh{} ff.write(str(id) + \PYGZdq{}\PYGZbs{}n\PYGZdq{} + np.array2string(shape) + \PYGZdq{}\PYGZbs{}n\PYGZdq{})}
+
+
+            \PYG{c+c1}{\PYGZsh{} if self.face\PYGZus{}camera\PYGZus{}name == self.hd\PYGZus{}cream\PYGZus{}name and self.hd\PYGZus{}cream\PYGZus{}name == self.eye\PYGZus{}camera\PYGZus{}name:}
+            \PYG{c+c1}{\PYGZsh{}     while self.\PYGZus{}win1\PYGZus{}running:}
+            \PYG{c+c1}{\PYGZsh{}         ret, frame = self.cap1.read()}
+            \PYG{c+c1}{\PYGZsh{}         if ret:}
+            \PYG{c+c1}{\PYGZsh{}             frame = cv2.cvtColor(frame, cv2.COLOR\PYGZus{}BGR2RGB)}
+            \PYG{c+c1}{\PYGZsh{}             self.original1\PYGZus{}image.updateImage(frame)}
+            \PYG{c+c1}{\PYGZsh{}             \PYGZsh{} self.eye\PYGZus{}image.updateImage(frame)}
+            \PYG{c+c1}{\PYGZsh{}             \PYGZsh{} self.original2\PYGZus{}image.updateImage(frame)}
+            \PYG{c+c1}{\PYGZsh{} if self.hd\PYGZus{}cream\PYGZus{}name == self.face\PYGZus{}camera\PYGZus{}name and self.hd\PYGZus{}cream\PYGZus{}name != self.eye\PYGZus{}camera\PYGZus{}name:}
+            \PYG{c+c1}{\PYGZsh{}     while self.\PYGZus{}win1\PYGZus{}running:}
+            \PYG{c+c1}{\PYGZsh{}         ret, frame = self.cap1.read()}
+            \PYG{c+c1}{\PYGZsh{}         if ret:}
+            \PYG{c+c1}{\PYGZsh{}             frame = cv2.cvtColor(frame, cv2.COLOR\PYGZus{}BGR2RGB)}
+            \PYG{c+c1}{\PYGZsh{}             self.original1\PYGZus{}image.updateImage(frame)}
+            \PYG{c+c1}{\PYGZsh{}             self.original2\PYGZus{}image.updateImage(frame)}
+            \PYG{c+c1}{\PYGZsh{} if self.hd\PYGZus{}cream\PYGZus{}name != self.face\PYGZus{}camera\PYGZus{}name and self.hd\PYGZus{}cream\PYGZus{}name == self.eye\PYGZus{}camera\PYGZus{}name:}
+            \PYG{c+c1}{\PYGZsh{}     while self.\PYGZus{}win1\PYGZus{}running:}
+            \PYG{c+c1}{\PYGZsh{}         ret, frame = self.cap1.read()}
+            \PYG{c+c1}{\PYGZsh{}         if ret:}
+            \PYG{c+c1}{\PYGZsh{}             frame = cv2.cvtColor(frame, cv2.COLOR\PYGZus{}BGR2RGB)}
+            \PYG{c+c1}{\PYGZsh{}             self.original1\PYGZus{}image.updateImage(frame)}
+            \PYG{c+c1}{\PYGZsh{}             self.eye\PYGZus{}image.updateImage(frame)}
+            \PYG{c+c1}{\PYGZsh{} if self.hd\PYGZus{}cream\PYGZus{}name != self.face\PYGZus{}camera\PYGZus{}name and self.hd\PYGZus{}cream\PYGZus{}name != self.eye\PYGZus{}camera\PYGZus{}name:}
+            \PYG{c+c1}{\PYGZsh{}     while self.\PYGZus{}win1\PYGZus{}running:}
+            \PYG{c+c1}{\PYGZsh{}         ret, frame = self.cap1.read()}
+            \PYG{c+c1}{\PYGZsh{}         if ret:}
+            \PYG{c+c1}{\PYGZsh{}             frame = cv2.cvtColor(frame, cv2.COLOR\PYGZus{}BGR2RGB)}
+            \PYG{c+c1}{\PYGZsh{}             self.original1\PYGZus{}image.updateImage(frame)}
+
+            \PYG{c+c1}{\PYGZsh{} self.original1\PYGZus{}image.updateImage(img\PYGZus{}no\PYGZus{}camera)}
+            \PYG{c+c1}{\PYGZsh{} if self.face\PYGZus{}camera\PYGZus{}name == self.hd\PYGZus{}cream\PYGZus{}name:}
+            \PYG{c+c1}{\PYGZsh{}     self.original2\PYGZus{}image.updateImage(img\PYGZus{}no\PYGZus{}camera)}
+            \PYG{c+c1}{\PYGZsh{} if self.hd\PYGZus{}cream\PYGZus{}name == self.eye\PYGZus{}camera\PYGZus{}name:}
+            \PYG{c+c1}{\PYGZsh{}     self.eye\PYGZus{}image.updateImage(img\PYGZus{}no\PYGZus{}camera)}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original1\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{img\PYGZus{}no\PYGZus{}camera}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{win\PYGZus{}2}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)} \PYG{o+ow}{and} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera\PYGZus{}name} \PYG{o}{!=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}cream\PYGZus{}name}\PYG{p}{):}\PYG{c+c1}{\PYGZsh{}脸部摄像头存在并且不和行为摄像头重合}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}win2\PYGZus{}running}\PYG{o}{=}\PYG{k+kc}{True}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap2} \PYG{o}{=} \PYG{l+m+mi}{0}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap2} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{VideoCapture}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera}\PYG{p}{,}\PYG{n}{cv2}\PYG{o}{.}\PYG{n}{CAP\PYGZus{}DSHOW}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap2}\PYG{o}{.}\PYG{n}{set}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,}\PYG{l+m+mi}{2560}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap2}\PYG{o}{.}\PYG{n}{set}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,}\PYG{l+m+mi}{1440}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap2}\PYG{o}{.}\PYG{n}{set}\PYG{p}{(}\PYG{l+m+mi}{5}\PYG{p}{,}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}fps}\PYG{p}{)}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}cap2\PYGZsq{}}\PYG{o}{+}\PYG{l+s+s1}{\PYGZsq{}\PYGZus{}\PYGZsq{}}\PYG{o}{+}\PYG{n+nb}{str}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap2}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{)))}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}cap2\PYGZsq{}}\PYG{o}{+}\PYG{l+s+s1}{\PYGZsq{}\PYGZus{}\PYGZsq{}}\PYG{o}{+}\PYG{n+nb}{str}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap2}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{)))}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}cap2\PYGZsq{}}\PYG{o}{+}\PYG{l+s+s1}{\PYGZsq{}\PYGZus{}\PYGZsq{}}\PYG{o}{+}\PYG{n+nb}{str}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap2}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+m+mi}{5}\PYG{p}{)))}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap2\PYGZus{}3} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap2}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{)}  \PYG{c+c1}{\PYGZsh{} 宽}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap2\PYGZus{}4} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap2}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{)}  \PYG{c+c1}{\PYGZsh{} 高}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}width} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap2\PYGZus{}3}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}height} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap2\PYGZus{}4}
+            \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}config/db.json\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}r\PYGZdq{}}\PYG{p}{,} \PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}UTF\PYGZhy{}8\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{dbfile\PYGZus{}r\PYGZus{}face}\PYG{p}{:}
+                \PYG{n}{jsonfile\PYGZus{}face} \PYG{o}{=} \PYG{n}{json}\PYG{o}{.}\PYG{n}{load}\PYG{p}{(}\PYG{n}{dbfile\PYGZus{}r\PYGZus{}face}\PYG{p}{)}
+            \PYG{n}{jsonfile\PYGZus{}face}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}face\PYGZus{}width\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}width}
+            \PYG{n}{jsonfile\PYGZus{}face}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}face\PYGZus{}height\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}height}
+            \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera\PYGZus{}name} \PYG{o}{==} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera\PYGZus{}name}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}width} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap2\PYGZus{}3}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}height} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap2\PYGZus{}4}
+                \PYG{n}{jsonfile\PYGZus{}face}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}eye\PYGZus{}width\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}width}
+                \PYG{n}{jsonfile\PYGZus{}face}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}eye\PYGZus{}height\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}height}
+            \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}config/db.json\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}w\PYGZdq{}}\PYG{p}{,} \PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}UTF\PYGZhy{}8\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{dbfile\PYGZus{}face}\PYG{p}{:}
+                \PYG{n}{json}\PYG{o}{.}\PYG{n}{dump}\PYG{p}{(}\PYG{n}{jsonfile\PYGZus{}face}\PYG{p}{,} \PYG{n}{dbfile\PYGZus{}face}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap2}\PYG{o}{.}\PYG{n}{set}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}width}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap2}\PYG{o}{.}\PYG{n}{set}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}width}\PYG{p}{)}
+            \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera\PYGZus{}name} \PYG{o}{==} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera\PYGZus{}name}\PYG{p}{:}
+                \PYG{k}{while} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}win2\PYGZus{}running}\PYG{p}{:}
+                    \PYG{n}{ret2}\PYG{p}{,}\PYG{n}{frame2} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap2}\PYG{o}{.}\PYG{n}{read}\PYG{p}{()}
+                    \PYG{k}{if} \PYG{n}{ret2}\PYG{p}{:}
+                        \PYG{n}{frame2} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{frame2}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}BGR2RGB}\PYG{p}{)}
+                        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original2\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{frame2}\PYG{p}{)}
+                        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{frame2}\PYG{p}{)}
+            \PYG{k}{else}\PYG{p}{:}
+                \PYG{k}{while} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}win2\PYGZus{}running}\PYG{p}{:}
+                    \PYG{n}{ret2}\PYG{p}{,} \PYG{n}{frame2} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap2}\PYG{o}{.}\PYG{n}{read}\PYG{p}{()}
+                    \PYG{k}{if} \PYG{n}{ret2}\PYG{p}{:}
+                        \PYG{n}{frame2} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{frame2}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}BGR2RGB}\PYG{p}{)}
+                        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original2\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{frame2}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original2\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{img\PYGZus{}no\PYGZus{}camera}\PYG{p}{)}
+            \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera\PYGZus{}name} \PYG{o}{==} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera\PYGZus{}name}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{img\PYGZus{}no\PYGZus{}camera}\PYG{p}{)}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original2\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{img\PYGZus{}no\PYGZus{}camera}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{win\PYGZus{}3}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)} \PYG{o+ow}{and} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera\PYGZus{}name} \PYG{o}{!=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera\PYGZus{}name}\PYG{p}{)} \PYG{o+ow}{and} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera\PYGZus{}name} \PYG{o}{!=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}cream\PYGZus{}name}\PYG{p}{):}\PYG{c+c1}{\PYGZsh{}不和脸部、行为重合}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}win3\PYGZus{}running}\PYG{o}{=}\PYG{k+kc}{True}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap3} \PYG{o}{=} \PYG{l+m+mi}{0}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap3} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{VideoCapture}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera}\PYG{p}{,}\PYG{n}{cv2}\PYG{o}{.}\PYG{n}{CAP\PYGZus{}DSHOW}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap3}\PYG{o}{.}\PYG{n}{set}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,}\PYG{l+m+mi}{2560}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap3}\PYG{o}{.}\PYG{n}{set}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,}\PYG{l+m+mi}{1440}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap3}\PYG{o}{.}\PYG{n}{set}\PYG{p}{(}\PYG{l+m+mi}{5}\PYG{p}{,}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}fps}\PYG{p}{)}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}cap3\PYGZsq{}}\PYG{o}{+}\PYG{l+s+s1}{\PYGZsq{}\PYGZus{}\PYGZsq{}}\PYG{o}{+}\PYG{n+nb}{str}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap3}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{)))}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}cap3\PYGZsq{}}\PYG{o}{+}\PYG{l+s+s1}{\PYGZsq{}\PYGZus{}\PYGZsq{}}\PYG{o}{+}\PYG{n+nb}{str}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap3}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{)))}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}cap3\PYGZsq{}}\PYG{o}{+}\PYG{l+s+s1}{\PYGZsq{}\PYGZus{}\PYGZsq{}}\PYG{o}{+}\PYG{n+nb}{str}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap3}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+m+mi}{5}\PYG{p}{)))}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap3\PYGZus{}3} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap3}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{)}  \PYG{c+c1}{\PYGZsh{} 宽}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap3\PYGZus{}4} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap3}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{)}  \PYG{c+c1}{\PYGZsh{} 高}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}width} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap3\PYGZus{}3}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}height} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap3\PYGZus{}4}
+            \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}config/db.json\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}r\PYGZdq{}}\PYG{p}{,} \PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}UTF\PYGZhy{}8\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{dbfile\PYGZus{}r\PYGZus{}eye}\PYG{p}{:}
+                \PYG{n}{jsonfile\PYGZus{}eye} \PYG{o}{=} \PYG{n}{json}\PYG{o}{.}\PYG{n}{load}\PYG{p}{(}\PYG{n}{dbfile\PYGZus{}r\PYGZus{}eye}\PYG{p}{)}
+            \PYG{n}{jsonfile\PYGZus{}eye}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}face\PYGZus{}width\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}width}
+            \PYG{n}{jsonfile\PYGZus{}eye}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}face\PYGZus{}height\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}height}
+            \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}config/db.json\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}w\PYGZdq{}}\PYG{p}{,} \PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}UTF\PYGZhy{}8\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{dbfile\PYGZus{}eye}\PYG{p}{:}
+                \PYG{n}{json}\PYG{o}{.}\PYG{n}{dump}\PYG{p}{(}\PYG{n}{jsonfile\PYGZus{}eye}\PYG{p}{,} \PYG{n}{dbfile\PYGZus{}eye}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap3}\PYG{o}{.}\PYG{n}{set}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}width}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap3}\PYG{o}{.}\PYG{n}{set}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}width}\PYG{p}{)}
+            \PYG{k}{while} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}win3\PYGZus{}running}\PYG{p}{:}
+                \PYG{n}{ret3}\PYG{p}{,} \PYG{n}{frame3} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap3}\PYG{o}{.}\PYG{n}{read}\PYG{p}{()}
+                \PYG{k}{if} \PYG{n}{ret3}\PYG{p}{:}
+                    \PYG{n}{frame3} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{frame3}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}BGR2RGB}\PYG{p}{)}
+                    \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{frame3}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{img\PYGZus{}no\PYGZus{}camera}\PYG{p}{)}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{img\PYGZus{}no\PYGZus{}camera}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{save\PYGZus{}hd\PYGZus{}video}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}
+            \PYG{n}{fn} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{lineEdit}\PYG{o}{.}\PYG{n}{text}\PYG{p}{()}
+            \PYG{n}{name}\PYG{o}{=}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{save\PYGZus{}path}\PYG{o}{+}\PYG{l+s+s2}{\PYGZdq{}/behavior\PYGZus{}\PYGZdq{}} \PYG{o}{+} \PYG{n}{fn} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}\PYGZus{}\PYGZdq{}} \PYG{o}{+} \PYG{n}{datetime}\PYG{o}{.}\PYG{n}{now}\PYG{p}{()}\PYG{o}{.}\PYG{n}{strftime}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}\PYGZpc{}Y\PYGZpc{}m}\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s+s1}{\PYGZpc{}H\PYGZpc{}M\PYGZpc{}S\PYGZsq{}}\PYG{p}{)} \PYG{o}{+} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{video\PYGZus{}format}
+            \PYG{n}{fourcc} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{VideoWriter\PYGZus{}fourcc}\PYG{p}{(}\PYG{o}{*}\PYG{l+s+s1}{\PYGZsq{}XVID\PYGZsq{}}\PYG{p}{)}
+            \PYG{n}{out} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{VideoWriter}\PYG{p}{(}\PYG{n}{name}\PYG{p}{,} \PYG{n}{fourcc}\PYG{p}{,} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}fps}\PYG{p}{),} \PYG{p}{(}\PYG{n+nb}{int}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}width}\PYG{p}{),} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}height}\PYG{p}{)))}
+            \PYG{k}{while} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}begin}\PYG{p}{:}
+                \PYG{n}{ret}\PYG{p}{,}\PYG{n}{frame}\PYG{o}{=}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap1}\PYG{o}{.}\PYG{n}{read}\PYG{p}{()}
+                \PYG{n}{out}\PYG{o}{.}\PYG{n}{write}\PYG{p}{(}\PYG{n}{frame}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{save\PYGZus{}face\PYGZus{}video}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}
+            \PYG{n}{fn} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{lineEdit}\PYG{o}{.}\PYG{n}{text}\PYG{p}{()}
+            \PYG{n}{name}\PYG{o}{=}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{save\PYGZus{}path}\PYG{o}{+}\PYG{l+s+s2}{\PYGZdq{}/face\PYGZus{}\PYGZdq{}} \PYG{o}{+} \PYG{n}{fn} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}\PYGZus{}\PYGZdq{}} \PYG{o}{+} \PYG{n}{datetime}\PYG{o}{.}\PYG{n}{now}\PYG{p}{()}\PYG{o}{.}\PYG{n}{strftime}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}\PYGZpc{}Y\PYGZpc{}m}\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s+s1}{\PYGZpc{}H\PYGZpc{}M\PYGZpc{}S\PYGZsq{}}\PYG{p}{)} \PYG{o}{+} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{video\PYGZus{}format}
+            \PYG{n}{fourcc} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{VideoWriter\PYGZus{}fourcc}\PYG{p}{(}\PYG{o}{*}\PYG{l+s+s1}{\PYGZsq{}XVID\PYGZsq{}}\PYG{p}{)}
+            \PYG{n}{out} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{VideoWriter}\PYG{p}{(}\PYG{n}{name}\PYG{p}{,} \PYG{n}{fourcc}\PYG{p}{,} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}fps}\PYG{p}{),} \PYG{p}{(}\PYG{n+nb}{int}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}width}\PYG{p}{),} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}height}\PYG{p}{)))}
+            \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera\PYGZus{}name} \PYG{o}{!=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}cream\PYGZus{}name}\PYG{p}{:}
+                \PYG{k}{while} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}begin}\PYG{p}{:}
+                    \PYG{n}{ret}\PYG{p}{,}\PYG{n}{frame}\PYG{o}{=}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap2}\PYG{o}{.}\PYG{n}{read}\PYG{p}{()}
+                    \PYG{n}{out}\PYG{o}{.}\PYG{n}{write}\PYG{p}{(}\PYG{n}{frame}\PYG{p}{)}
+            \PYG{k}{else}\PYG{p}{:}
+                \PYG{k}{while} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}begin}\PYG{p}{:}
+                    \PYG{n}{ret}\PYG{p}{,}\PYG{n}{frame}\PYG{o}{=}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap1}\PYG{o}{.}\PYG{n}{read}\PYG{p}{()}
+                    \PYG{n}{out}\PYG{o}{.}\PYG{n}{write}\PYG{p}{(}\PYG{n}{frame}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{save\PYGZus{}eye\PYGZus{}video}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}
+            \PYG{n}{fn} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{lineEdit}\PYG{o}{.}\PYG{n}{text}\PYG{p}{()}
+            \PYG{n}{name}\PYG{o}{=}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{save\PYGZus{}path}\PYG{o}{+}\PYG{l+s+s2}{\PYGZdq{}/eye\PYGZus{}\PYGZdq{}} \PYG{o}{+} \PYG{n}{fn} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}\PYGZus{}\PYGZdq{}} \PYG{o}{+} \PYG{n}{datetime}\PYG{o}{.}\PYG{n}{now}\PYG{p}{()}\PYG{o}{.}\PYG{n}{strftime}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}\PYGZpc{}Y\PYGZpc{}m}\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s+s1}{\PYGZpc{}H\PYGZpc{}M\PYGZpc{}S\PYGZsq{}}\PYG{p}{)} \PYG{o}{+} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{video\PYGZus{}format}
+            \PYG{n}{fourcc} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{VideoWriter\PYGZus{}fourcc}\PYG{p}{(}\PYG{o}{*}\PYG{l+s+s1}{\PYGZsq{}XVID\PYGZsq{}}\PYG{p}{)}
+            \PYG{n}{out} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{VideoWriter}\PYG{p}{(}\PYG{n}{name}\PYG{p}{,} \PYG{n}{fourcc}\PYG{p}{,} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}fps}\PYG{p}{),} \PYG{p}{(}\PYG{n+nb}{int}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}width}\PYG{p}{),} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}height}\PYG{p}{)))}
+            \PYG{k}{if} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera\PYGZus{}name} \PYG{o}{!=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}cream\PYGZus{}name}\PYG{p}{)} \PYG{o}{\PYGZam{}} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera\PYGZus{}name} \PYG{o}{!=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera\PYGZus{}name}\PYG{p}{):}
+                \PYG{k}{while} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}begin}\PYG{p}{:}
+                    \PYG{n}{ret}\PYG{p}{,}\PYG{n}{frame}\PYG{o}{=}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap3}\PYG{o}{.}\PYG{n}{read}\PYG{p}{()}
+                    \PYG{n}{out}\PYG{o}{.}\PYG{n}{write}\PYG{p}{(}\PYG{n}{frame}\PYG{p}{)}
+            \PYG{k}{elif} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera\PYGZus{}name} \PYG{o}{!=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}cream\PYGZus{}name}\PYG{p}{)} \PYG{o}{\PYGZam{}} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera\PYGZus{}name} \PYG{o}{==} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera\PYGZus{}name}\PYG{p}{):}
+                \PYG{k}{while} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}begin}\PYG{p}{:}
+                    \PYG{n}{ret}\PYG{p}{,}\PYG{n}{frame}\PYG{o}{=}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap2}\PYG{o}{.}\PYG{n}{read}\PYG{p}{()}
+                    \PYG{n}{out}\PYG{o}{.}\PYG{n}{write}\PYG{p}{(}\PYG{n}{frame}\PYG{p}{)}
+            \PYG{k}{else}\PYG{p}{:}
+                \PYG{k}{while} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}begin}\PYG{p}{:}
+                    \PYG{n}{ret}\PYG{p}{,}\PYG{n}{frame}\PYG{o}{=}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cap1}\PYG{o}{.}\PYG{n}{read}\PYG{p}{()}
+                    \PYG{n}{out}\PYG{o}{.}\PYG{n}{write}\PYG{p}{(}\PYG{n}{frame}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{win\PYGZus{}4\PYGZus{}upimage}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{img\PYGZus{}voice}\PYG{p}{)}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{k}{pass}
+    \PYG{k}{def} \PYG{n+nf}{win\PYGZus{}4}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}voice\PYGZus{}get} \PYG{o}{=} \PYG{k+kc}{True}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}frames}\PYG{o}{=}\PYG{p}{[]}
+        \PYG{n}{p}\PYG{o}{=}\PYG{n}{pyaudio}\PYG{o}{.}\PYG{n}{PyAudio}\PYG{p}{()}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index}\PYG{p}{)}
+        \PYG{n}{stream}\PYG{o}{=}\PYG{n}{p}\PYG{o}{.}\PYG{n}{open}\PYG{p}{(}\PYG{n+nb}{format}\PYG{o}{=}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{FORMAT}\PYG{p}{,}
+                      \PYG{n}{rate}\PYG{o}{=}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{RATE}\PYG{p}{,}
+                      \PYG{n}{channels}\PYG{o}{=}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{CHANNELS}\PYG{p}{,}
+                      \PYG{n+nb}{input}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{,}
+                      \PYG{n}{frames\PYGZus{}per\PYGZus{}buffer}\PYG{o}{=}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{CHUNK}\PYG{p}{,}
+                      \PYG{n}{input\PYGZus{}device\PYGZus{}index}\PYG{o}{=}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index}\PYG{p}{)}
+        \PYG{k}{while} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}voice\PYGZus{}get}\PYG{p}{:}
+            \PYG{n}{data} \PYG{o}{=} \PYG{n}{stream}\PYG{o}{.}\PYG{n}{read}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{CHUNK}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}frames}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{data}\PYG{p}{)}
+        \PYG{n}{stream}\PYG{o}{.}\PYG{n}{stop\PYGZus{}stream}\PYG{p}{()}
+        \PYG{n}{stream}\PYG{o}{.}\PYG{n}{close}\PYG{p}{()}
+        \PYG{n}{p}\PYG{o}{.}\PYG{n}{terminate}\PYG{p}{()}
+    \PYG{k}{def} \PYG{n+nf}{voice\PYGZus{}save}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n}{p} \PYG{o}{=} \PYG{n}{pyaudio}\PYG{o}{.}\PYG{n}{PyAudio}\PYG{p}{()}
+        \PYG{n}{fn} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{lineEdit}\PYG{o}{.}\PYG{n}{text}\PYG{p}{()}
+        \PYG{n}{name} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{save\PYGZus{}path}\PYG{o}{+}\PYG{l+s+s2}{\PYGZdq{}/vioce\PYGZus{}\PYGZdq{}} \PYG{o}{+} \PYG{n}{fn} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}\PYGZus{}\PYGZdq{}} \PYG{o}{+} \PYG{n}{datetime}\PYG{o}{.}\PYG{n}{now}\PYG{p}{()}\PYG{o}{.}\PYG{n}{strftime}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}\PYGZpc{}Y\PYGZpc{}m}\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s+s1}{\PYGZpc{}H\PYGZpc{}M\PYGZpc{}S\PYGZsq{}}\PYG{p}{)} \PYG{o}{+} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}format}
+        \PYG{n}{wf} \PYG{o}{=} \PYG{n}{wave}\PYG{o}{.}\PYG{n}{open}\PYG{p}{(}\PYG{n}{name}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}wb\PYGZsq{}}\PYG{p}{)}
+        \PYG{n}{wf}\PYG{o}{.}\PYG{n}{setnchannels}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{CHANNELS}\PYG{p}{)}
+        \PYG{n}{wf}\PYG{o}{.}\PYG{n}{setsampwidth}\PYG{p}{(}\PYG{n}{p}\PYG{o}{.}\PYG{n}{get\PYGZus{}sample\PYGZus{}size}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{FORMAT}\PYG{p}{))}
+        \PYG{n}{wf}\PYG{o}{.}\PYG{n}{setframerate}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{RATE}\PYG{p}{)}
+        \PYG{n}{wf}\PYG{o}{.}\PYG{n}{writeframes}\PYG{p}{(}\PYG{l+s+sa}{b}\PYG{l+s+s1}{\PYGZsq{}\PYGZsq{}}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}frames}\PYG{p}{))}
+        \PYG{n}{wf}\PYG{o}{.}\PYG{n}{close}\PYG{p}{()}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Saved\PYGZdq{}}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{updatemessage}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{c+c1}{\PYGZsh{} 只有在点击开始录制时才会显示该消息，点击进程结束时停止显示。}
+        \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}config/db.json\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}r\PYGZdq{}}\PYG{p}{,} \PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}UTF\PYGZhy{}8\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{dbfile\PYGZus{}r}\PYG{p}{:}
+            \PYG{n}{jsonfile} \PYG{o}{=} \PYG{n}{json}\PYG{o}{.}\PYG{n}{load}\PYG{p}{(}\PYG{n}{dbfile\PYGZus{}r}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{save\PYGZus{}path} \PYG{o}{=} \PYG{n}{jsonfile}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}save\PYGZus{}path\PYGZsq{}}\PYG{p}{]}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{time\PYGZus{}end} \PYG{o}{=} \PYG{n}{time}\PYG{o}{.}\PYG{n}{time}\PYG{p}{()}
+        \PYG{n}{m}\PYG{p}{,} \PYG{n}{s} \PYG{o}{=} \PYG{n+nb}{divmod}\PYG{p}{(}\PYG{n+nb}{int}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{time\PYGZus{}end}\PYG{o}{\PYGZhy{}}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{time\PYGZus{}start}\PYG{p}{),} \PYG{l+m+mi}{60}\PYG{p}{)}
+        \PYG{n}{h}\PYG{p}{,} \PYG{n}{m} \PYG{o}{=} \PYG{n+nb}{divmod}\PYG{p}{(}\PYG{n}{m}\PYG{p}{,} \PYG{l+m+mi}{60}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{recording\PYGZus{}time} \PYG{o}{=} \PYG{n+nb}{str}\PYG{p}{(}\PYG{n}{h}\PYG{p}{)}\PYG{o}{+}\PYG{l+s+s1}{\PYGZsq{}时\PYGZsq{}}\PYG{o}{+}\PYG{n+nb}{str}\PYG{p}{(}\PYG{n}{m}\PYG{p}{)}\PYG{o}{+}\PYG{l+s+s1}{\PYGZsq{}分\PYGZsq{}}\PYG{o}{+}\PYG{n+nb}{str}\PYG{p}{(}\PYG{n}{s}\PYG{p}{)}\PYG{o}{+}\PYG{l+s+s1}{\PYGZsq{}秒\PYGZsq{}}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{showMessage}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}当前样本编号：\PYGZsq{}} \PYG{o}{+} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{lineEdit}\PYG{o}{.}\PYG{n}{text}\PYG{p}{()} \PYG{o}{+} \PYG{l+s+s1}{\PYGZsq{}   保存位置：\PYGZsq{}} \PYG{o}{+} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{save\PYGZus{}path} \PYG{o}{+} \PYG{l+s+s1}{\PYGZsq{}   录制时间：\PYGZsq{}} \PYG{o}{+} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{recording\PYGZus{}time}\PYG{p}{)}
+        \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}start\PYGZus{}running} \PYG{o}{==} \PYG{k+kc}{True}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{qttimer}\PYG{o}{.}\PYG{n}{stop}\PYG{p}{()}
+    \PYG{k}{def} \PYG{n+nf}{startRe}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index}\PYG{p}{)}
+        \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}start\PYGZus{}running}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}start\PYGZus{}running} \PYG{o}{=}\PYG{k+kc}{False}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}begin} \PYG{o}{=} \PYG{k+kc}{True}
+            \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}config/db.json\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}r\PYGZdq{}}\PYG{p}{,} \PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}UTF\PYGZhy{}8\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{dbfile\PYGZus{}r}\PYG{p}{:}
+                \PYG{n}{jsonfile} \PYG{o}{=} \PYG{n}{json}\PYG{o}{.}\PYG{n}{load}\PYG{p}{(}\PYG{n}{dbfile\PYGZus{}r}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}format} \PYG{o}{=} \PYG{n}{jsonfile}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}voice\PYGZus{}format\PYGZdq{}}\PYG{p}{]}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{video\PYGZus{}format} \PYG{o}{=} \PYG{n}{jsonfile}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}video\PYGZus{}format\PYGZdq{}}\PYG{p}{]}
+            \PYG{c+c1}{\PYGZsh{}需要显示的有：病人ID，当前保存路径，已经录制多长时间，在加一个录制中。}
+            \PYG{c+c1}{\PYGZsh{}已录制多长时间需要动态显示，每秒更新一次状态栏，只在录制视频的时候显示。}
+            \PYG{c+c1}{\PYGZsh{}什么情况下会录制视频？\PYGZus{}begin == True ,上面写了，不等于\PYGZhy{}1就能录制视频。}
+            \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{or} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{or} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hd\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o+ow}{or} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{face\PYGZus{}camera} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}\PYG{c+c1}{\PYGZsh{}self.voice\PYGZus{}index！=\PYGZhy{}1，则一定会录制音频。如果有其他设备不为\PYGZhy{}1则会录制视频，只要有录制情况就显示该消息}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{time\PYGZus{}start} \PYG{o}{=} \PYG{n}{time}\PYG{o}{.}\PYG{n}{time}\PYG{p}{()}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{record\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{True} \PYG{c+c1}{\PYGZsh{}表示是否在录制中。该变量只与qtimer有关，该变量为True则一定有QTimer（）,当然线程终止也会赋值为False，表示结束录制了。}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{qttimer} \PYG{o}{=} \PYG{n}{QTimer}\PYG{p}{()}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{qttimer}\PYG{o}{.}\PYG{n}{start}\PYG{p}{(}\PYG{l+m+mi}{200}\PYG{p}{)}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{qttimer}\PYG{o}{.}\PYG{n}{timeout}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{updatemessage}\PYG{p}{)}
+            \PYG{n}{threading}\PYG{o}{.}\PYG{n}{\PYGZus{}start\PYGZus{}new\PYGZus{}thread}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{save\PYGZus{}hd\PYGZus{}video}\PYG{p}{,} \PYG{p}{())}
+            \PYG{n}{threading}\PYG{o}{.}\PYG{n}{\PYGZus{}start\PYGZus{}new\PYGZus{}thread}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{save\PYGZus{}face\PYGZus{}video}\PYG{p}{,} \PYG{p}{())}
+            \PYG{n}{threading}\PYG{o}{.}\PYG{n}{\PYGZus{}start\PYGZus{}new\PYGZus{}thread}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{save\PYGZus{}eye\PYGZus{}video}\PYG{p}{,} \PYG{p}{())}
+            \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}
+                \PYG{n}{threading}\PYG{o}{.}\PYG{n}{\PYGZus{}start\PYGZus{}new\PYGZus{}thread}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{win\PYGZus{}4}\PYG{p}{,} \PYG{p}{())}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{k}{pass}
+    \PYG{k}{def} \PYG{n+nf}{endRe}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}start\PYGZus{}running}\PYG{o}{==}\PYG{k+kc}{False}\PYG{p}{:}
+            \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{record\PYGZus{}judge} \PYG{o}{==} \PYG{k+kc}{True}\PYG{p}{:}\PYG{c+c1}{\PYGZsh{}只有点击}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{qttimer}\PYG{o}{.}\PYG{n}{stop}\PYG{p}{()}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{record\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{False}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{showMessage}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}录制结束，文件已保存至：\PYGZsq{}} \PYG{o}{+} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{save\PYGZus{}path} \PYG{o}{+} \PYG{l+s+s1}{\PYGZsq{} 录制时长：\PYGZsq{}} \PYG{o}{+} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{recording\PYGZus{}time}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}start\PYGZus{}running}\PYG{o}{=}\PYG{k+kc}{True}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}begin} \PYG{o}{=}\PYG{k+kc}{False}
+            \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}index} \PYG{o}{!=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}voice\PYGZus{}get} \PYG{o}{=} \PYG{k+kc}{False}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}save}\PYG{p}{()}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{showMessage}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}录制结束，文件已保存至：\PYGZsq{}}\PYG{o}{+}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{save\PYGZus{}path}\PYG{o}{+}\PYG{l+s+s1}{\PYGZsq{} 录制时长：\PYGZsq{}}\PYG{o}{+}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{recording\PYGZus{}time}\PYG{p}{)}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{k}{pass}
+    \PYG{k}{def} \PYG{n+nf}{closeEvent}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,}\PYG{n}{event}\PYG{p}{):}
+        \PYG{c+c1}{\PYGZsh{}关闭所有线程，防止不能退出}
+        \PYG{c+c1}{\PYGZsh{}如果没有运行进程终止，则不能退出}
+        \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}init\PYGZus{}running} \PYG{o}{==} \PYG{k+kc}{False}\PYG{p}{:}
+            \PYG{n}{QMessageBox}\PYG{o}{.}\PYG{n}{information}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}警告\PYGZsq{}}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}进程未中止，请中止进程再关闭窗口！\PYGZsq{}}\PYG{p}{)}
+            \PYG{n}{event}\PYG{o}{.}\PYG{n}{ignore}\PYG{p}{()}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}closeevent\PYGZsq{}}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{stop}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{record\PYGZus{}judge} \PYG{o}{==} \PYG{k+kc}{True}\PYG{p}{:}
+            \PYG{n}{QMessageBox}\PYG{o}{.}\PYG{n}{information}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}警告\PYGZsq{}}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}正在录制中，请结束录制后再点击停用视频设备！\PYGZsq{}}\PYG{p}{)}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}win1\PYGZus{}running} \PYG{o}{=} \PYG{k+kc}{False}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}win2\PYGZus{}running} \PYG{o}{=} \PYG{k+kc}{False}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}win3\PYGZus{}running} \PYG{o}{=} \PYG{k+kc}{False}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}init\PYGZus{}running} \PYG{o}{=} \PYG{k+kc}{True}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}stop\PYGZsq{}}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}所有通道均已断开\PYGZsq{}}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{img\PYGZus{}no\PYGZus{}voice}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{showMessage}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}所有通道均已断开\PYGZsq{}}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{f\PYGZus{}p}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{c+c1}{\PYGZsh{}点进程终止的时候录音进程可能不会终止，而视频录制会结束，必须再点结束录制才能结束\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}先不管它，假设先用不到它。\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}还是先解决它吧。}
+        \PYG{c+c1}{\PYGZsh{}进程中止前判断是否在录制中，若在录制中，需要点击录制结束}
+        \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{record\PYGZus{}judge} \PYG{o}{==} \PYG{k+kc}{True}\PYG{p}{:}
+            \PYG{n}{QMessageBox}\PYG{o}{.}\PYG{n}{information}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}警告\PYGZsq{}}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}正在录制中，请结束录制后再点击进程中止！\PYGZsq{}}\PYG{p}{)}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}win1\PYGZus{}running} \PYG{o}{=} \PYG{k+kc}{False}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}win2\PYGZus{}running} \PYG{o}{=} \PYG{k+kc}{False}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}win3\PYGZus{}running} \PYG{o}{=} \PYG{k+kc}{False}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}init\PYGZus{}running} \PYG{o}{=} \PYG{k+kc}{True}
+            \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{record\PYGZus{}judge} \PYG{o}{==} \PYG{k+kc}{True}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}begin} \PYG{o}{=} \PYG{k+kc}{False}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}start\PYGZus{}running} \PYG{o}{=} \PYG{k+kc}{True}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}voice\PYGZus{}get} \PYG{o}{=} \PYG{k+kc}{False}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}save}\PYG{p}{()}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{qttimer}\PYG{o}{.}\PYG{n}{stop}\PYG{p}{()}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{record\PYGZus{}judge} \PYG{o}{=} \PYG{k+kc}{False}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}voice\PYGZus{}get} \PYG{o}{=} \PYG{k+kc}{True}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}begin} \PYG{o}{=} \PYG{k+kc}{False}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}stop\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}所有进程均已中止\PYGZsq{}}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{showMessage}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}所有进程均已中止\PYGZsq{}}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{img\PYGZus{}no\PYGZus{}voice}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{about}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n}{QMessageBox}\PYG{o}{.}\PYG{n}{about}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}面部表型特征提取系统\PYGZdq{}}\PYG{p}{,}
+                          \PYG{l+s+s2}{\PYGZdq{}\PYGZlt{}p\PYGZgt{}山东省精神卫生中心\PYGZlt{}/p\PYGZgt{}\PYGZdq{}}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{updateImages}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{calculateProcessed}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{calculateOriginal}\PYG{p}{()}
+    \PYG{k}{def} \PYG{n+nf}{createButtons}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{initButton}\PYG{o}{.}\PYG{n}{clicked}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{initfrom}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{pushButton}\PYG{o}{.}\PYG{n}{clicked}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{stop}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{shotButton}\PYG{o}{.}\PYG{n}{clicked}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{f\PYGZus{}p}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionAbout}\PYG{o}{.}\PYG{n}{triggered}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{about}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{startButton}\PYG{o}{.}\PYG{n}{clicked}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{startRe}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{endButton}\PYG{o}{.}\PYG{n}{clicked}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{endRe}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{action12}\PYG{o}{.}\PYG{n}{triggered}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{child\PYGZus{}CameraVoice\PYGZus{}setting}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{}子窗口配置摄像头和麦克风}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionse}\PYG{o}{.}\PYG{n}{triggered}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{Child\PYGZus{}File\PYGZus{}Setting}\PYG{p}{)}\PYG{c+c1}{\PYGZsh{}选择文件路径}
+    \PYG{k}{def} \PYG{n+nf}{setBackground}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n}{cv\PYGZus{}img\PYGZus{}rgb} \PYG{o}{=} \PYG{n}{img\PYGZus{}no\PYGZus{}camera}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original1\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{cv\PYGZus{}img\PYGZus{}rgb}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original2\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{cv\PYGZus{}img\PYGZus{}rgb}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{cv\PYGZus{}img\PYGZus{}rgb}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}image}\PYG{o}{.}\PYG{n}{updateImage}\PYG{p}{(}\PYG{n}{img\PYGZus{}no\PYGZus{}voice}\PYG{p}{)}
+\end{Verbatim}

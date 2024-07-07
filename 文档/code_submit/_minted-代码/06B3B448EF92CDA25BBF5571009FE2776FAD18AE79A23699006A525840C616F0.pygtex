@@ -1,0 +1,188 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{c+c1}{\PYGZsh{} \PYGZhy{}*\PYGZhy{} coding: utf\PYGZhy{}8 \PYGZhy{}*\PYGZhy{}}
+\PYG{c+c1}{\PYGZsh{} Form implementation generated from reading ui file \PYGZsq{}gui.ui\PYGZsq{}}
+\PYG{c+c1}{\PYGZsh{}}
+\PYG{c+c1}{\PYGZsh{} Created by: PyQt5 UI code generator 5.9.2}
+\PYG{c+c1}{\PYGZsh{}}
+\PYG{c+c1}{\PYGZsh{} WARNING! All changes made in this file will be lost!}
+\PYG{k+kn}{from} \PYG{n+nn}{PyQt5} \PYG{k+kn}{import} \PYG{n}{QtCore}\PYG{p}{,} \PYG{n}{QtGui}\PYG{p}{,} \PYG{n}{QtWidgets}
+\PYG{k}{class} \PYG{n+nc}{Ui\PYGZus{}MainWindow}\PYG{p}{(}\PYG{n+nb}{object}\PYG{p}{):}
+    \PYG{k}{def} \PYG{n+nf}{setupUi}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{MainWindow}\PYG{p}{):}
+        \PYG{n}{MainWindow}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{)}
+        \PYG{n}{MainWindow}\PYG{o}{.}\PYG{n}{resize}\PYG{p}{(}\PYG{l+m+mi}{830}\PYG{p}{,} \PYG{l+m+mi}{578}\PYG{p}{)}
+        \PYG{n}{icon} \PYG{o}{=} \PYG{n}{QtGui}\PYG{o}{.}\PYG{n}{QIcon}\PYG{p}{()}
+        \PYG{n}{icon}\PYG{o}{.}\PYG{n}{addPixmap}\PYG{p}{(}\PYG{n}{QtGui}\PYG{o}{.}\PYG{n}{QPixmap}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}icon.ico\PYGZdq{}}\PYG{p}{),} \PYG{n}{QtGui}\PYG{o}{.}\PYG{n}{QIcon}\PYG{o}{.}\PYG{n}{Normal}\PYG{p}{,} \PYG{n}{QtGui}\PYG{o}{.}\PYG{n}{QIcon}\PYG{o}{.}\PYG{n}{Off}\PYG{p}{)}
+        \PYG{n}{MainWindow}\PYG{o}{.}\PYG{n}{setWindowIcon}\PYG{p}{(}\PYG{n}{icon}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{centralwidget} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QWidget}\PYG{p}{(}\PYG{n}{MainWindow}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{centralwidget}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}centralwidget\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{verticalLayout\PYGZus{}4} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QVBoxLayout}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{centralwidget}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{verticalLayout\PYGZus{}4}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}verticalLayout\PYGZus{}4\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{h\PYGZus{}img\PYGZus{}lay} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QHBoxLayout}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{h\PYGZus{}img\PYGZus{}lay}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}h\PYGZus{}img\PYGZus{}lay\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original\PYGZus{}img\PYGZus{}v\PYGZus{}lay} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QVBoxLayout}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original\PYGZus{}img\PYGZus{}v\PYGZus{}lay}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}original\PYGZus{}img\PYGZus{}v\PYGZus{}lay\PYGZdq{}}\PYG{p}{)}
+        \PYG{n}{spacerItem} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QSpacerItem}\PYG{p}{(}\PYG{l+m+mi}{20}\PYG{p}{,} \PYG{l+m+mi}{40}\PYG{p}{,} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QSizePolicy}\PYG{o}{.}\PYG{n}{Minimum}\PYG{p}{,} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QSizePolicy}\PYG{o}{.}\PYG{n}{Expanding}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original\PYGZus{}img\PYGZus{}v\PYGZus{}lay}\PYG{o}{.}\PYG{n}{addItem}\PYG{p}{(}\PYG{n}{spacerItem}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original\PYGZus{}name\PYGZus{}lbl} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QLabel}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{centralwidget}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original\PYGZus{}name\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setScaledContents}\PYG{p}{(}\PYG{k+kc}{False}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original\PYGZus{}name\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setAlignment}\PYG{p}{(}\PYG{n}{QtCore}\PYG{o}{.}\PYG{n}{Qt}\PYG{o}{.}\PYG{n}{AlignCenter}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original\PYGZus{}name\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}original\PYGZus{}name\PYGZus{}lbl\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original\PYGZus{}img\PYGZus{}v\PYGZus{}lay}\PYG{o}{.}\PYG{n}{addWidget}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original\PYGZus{}name\PYGZus{}lbl}\PYG{p}{)}
+        \PYG{n}{spacerItem1} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QSpacerItem}\PYG{p}{(}\PYG{l+m+mi}{20}\PYG{p}{,} \PYG{l+m+mi}{40}\PYG{p}{,} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QSizePolicy}\PYG{o}{.}\PYG{n}{Minimum}\PYG{p}{,} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QSizePolicy}\PYG{o}{.}\PYG{n}{Expanding}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original\PYGZus{}img\PYGZus{}v\PYGZus{}lay}\PYG{o}{.}\PYG{n}{addItem}\PYG{p}{(}\PYG{n}{spacerItem1}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original\PYGZus{}frame\PYGZus{}lbl} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QLabel}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{centralwidget}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original\PYGZus{}frame\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setMinimumSize}\PYG{p}{(}\PYG{n}{QtCore}\PYG{o}{.}\PYG{n}{QSize}\PYG{p}{(}\PYG{l+m+mi}{400}\PYG{p}{,} \PYG{l+m+mi}{240}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original\PYGZus{}frame\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setAlignment}\PYG{p}{(}\PYG{n}{QtCore}\PYG{o}{.}\PYG{n}{Qt}\PYG{o}{.}\PYG{n}{AlignCenter}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original\PYGZus{}frame\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}original\PYGZus{}frame\PYGZus{}lbl\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original\PYGZus{}img\PYGZus{}v\PYGZus{}lay}\PYG{o}{.}\PYG{n}{addWidget}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original\PYGZus{}frame\PYGZus{}lbl}\PYG{p}{)}
+        \PYG{n}{spacerItem2} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QSpacerItem}\PYG{p}{(}\PYG{l+m+mi}{20}\PYG{p}{,} \PYG{l+m+mi}{40}\PYG{p}{,} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QSizePolicy}\PYG{o}{.}\PYG{n}{Minimum}\PYG{p}{,} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QSizePolicy}\PYG{o}{.}\PYG{n}{Expanding}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original\PYGZus{}img\PYGZus{}v\PYGZus{}lay}\PYG{o}{.}\PYG{n}{addItem}\PYG{p}{(}\PYG{n}{spacerItem2}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{h\PYGZus{}img\PYGZus{}lay}\PYG{o}{.}\PYG{n}{addLayout}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original\PYGZus{}img\PYGZus{}v\PYGZus{}lay}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{processed\PYGZus{}img\PYGZus{}v\PYGZus{}lay} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QVBoxLayout}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{processed\PYGZus{}img\PYGZus{}v\PYGZus{}lay}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}processed\PYGZus{}img\PYGZus{}v\PYGZus{}lay\PYGZdq{}}\PYG{p}{)}
+        \PYG{n}{spacerItem3} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QSpacerItem}\PYG{p}{(}\PYG{l+m+mi}{20}\PYG{p}{,} \PYG{l+m+mi}{40}\PYG{p}{,} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QSizePolicy}\PYG{o}{.}\PYG{n}{Minimum}\PYG{p}{,} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QSizePolicy}\PYG{o}{.}\PYG{n}{Expanding}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{processed\PYGZus{}img\PYGZus{}v\PYGZus{}lay}\PYG{o}{.}\PYG{n}{addItem}\PYG{p}{(}\PYG{n}{spacerItem3}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{processed\PYGZus{}name\PYGZus{}lbl} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QLabel}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{centralwidget}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{processed\PYGZus{}name\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setAlignment}\PYG{p}{(}\PYG{n}{QtCore}\PYG{o}{.}\PYG{n}{Qt}\PYG{o}{.}\PYG{n}{AlignCenter}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{processed\PYGZus{}name\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}processed\PYGZus{}name\PYGZus{}lbl\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{processed\PYGZus{}img\PYGZus{}v\PYGZus{}lay}\PYG{o}{.}\PYG{n}{addWidget}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{processed\PYGZus{}name\PYGZus{}lbl}\PYG{p}{)}
+        \PYG{n}{spacerItem4} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QSpacerItem}\PYG{p}{(}\PYG{l+m+mi}{20}\PYG{p}{,} \PYG{l+m+mi}{40}\PYG{p}{,} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QSizePolicy}\PYG{o}{.}\PYG{n}{Minimum}\PYG{p}{,} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QSizePolicy}\PYG{o}{.}\PYG{n}{Expanding}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{processed\PYGZus{}img\PYGZus{}v\PYGZus{}lay}\PYG{o}{.}\PYG{n}{addItem}\PYG{p}{(}\PYG{n}{spacerItem4}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{processed\PYGZus{}frame\PYGZus{}lbl} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QLabel}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{centralwidget}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{processed\PYGZus{}frame\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setMinimumSize}\PYG{p}{(}\PYG{n}{QtCore}\PYG{o}{.}\PYG{n}{QSize}\PYG{p}{(}\PYG{l+m+mi}{400}\PYG{p}{,} \PYG{l+m+mi}{240}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{processed\PYGZus{}frame\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setBaseSize}\PYG{p}{(}\PYG{n}{QtCore}\PYG{o}{.}\PYG{n}{QSize}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{processed\PYGZus{}frame\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{processed\PYGZus{}frame\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setAlignment}\PYG{p}{(}\PYG{n}{QtCore}\PYG{o}{.}\PYG{n}{Qt}\PYG{o}{.}\PYG{n}{AlignCenter}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{processed\PYGZus{}frame\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}processed\PYGZus{}frame\PYGZus{}lbl\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{processed\PYGZus{}img\PYGZus{}v\PYGZus{}lay}\PYG{o}{.}\PYG{n}{addWidget}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{processed\PYGZus{}frame\PYGZus{}lbl}\PYG{p}{)}
+        \PYG{n}{spacerItem5} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QSpacerItem}\PYG{p}{(}\PYG{l+m+mi}{20}\PYG{p}{,} \PYG{l+m+mi}{40}\PYG{p}{,} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QSizePolicy}\PYG{o}{.}\PYG{n}{Minimum}\PYG{p}{,} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QSizePolicy}\PYG{o}{.}\PYG{n}{Expanding}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{processed\PYGZus{}img\PYGZus{}v\PYGZus{}lay}\PYG{o}{.}\PYG{n}{addItem}\PYG{p}{(}\PYG{n}{spacerItem5}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{h\PYGZus{}img\PYGZus{}lay}\PYG{o}{.}\PYG{n}{addLayout}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{processed\PYGZus{}img\PYGZus{}v\PYGZus{}lay}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{verticalLayout\PYGZus{}4}\PYG{o}{.}\PYG{n}{addLayout}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{h\PYGZus{}img\PYGZus{}lay}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{horizontalLayout} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QHBoxLayout}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{horizontalLayout}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}horizontalLayout\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{verticalLayout\PYGZus{}2} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QVBoxLayout}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{verticalLayout\PYGZus{}2}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}verticalLayout\PYGZus{}2\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{label\PYGZus{}3} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QLabel}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{centralwidget}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{label\PYGZus{}3}\PYG{o}{.}\PYG{n}{setAlignment}\PYG{p}{(}\PYG{n}{QtCore}\PYG{o}{.}\PYG{n}{Qt}\PYG{o}{.}\PYG{n}{AlignCenter}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{label\PYGZus{}3}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}label\PYGZus{}3\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{verticalLayout\PYGZus{}2}\PYG{o}{.}\PYG{n}{addWidget}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{label\PYGZus{}3}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}lbl} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QLabel}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{centralwidget}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setMinimumSize}\PYG{p}{(}\PYG{n}{QtCore}\PYG{o}{.}\PYG{n}{QSize}\PYG{p}{(}\PYG{l+m+mi}{400}\PYG{p}{,} \PYG{l+m+mi}{240}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setAlignment}\PYG{p}{(}\PYG{n}{QtCore}\PYG{o}{.}\PYG{n}{Qt}\PYG{o}{.}\PYG{n}{AlignCenter}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}eye\PYGZus{}lbl\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{verticalLayout\PYGZus{}2}\PYG{o}{.}\PYG{n}{addWidget}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{eye\PYGZus{}lbl}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{horizontalLayout}\PYG{o}{.}\PYG{n}{addLayout}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{verticalLayout\PYGZus{}2}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{verticalLayout} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QVBoxLayout}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{verticalLayout}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}verticalLayout\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{label\PYGZus{}2} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QLabel}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{centralwidget}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{label\PYGZus{}2}\PYG{o}{.}\PYG{n}{setAlignment}\PYG{p}{(}\PYG{n}{QtCore}\PYG{o}{.}\PYG{n}{Qt}\PYG{o}{.}\PYG{n}{AlignCenter}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{label\PYGZus{}2}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}label\PYGZus{}2\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{verticalLayout}\PYG{o}{.}\PYG{n}{addWidget}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{label\PYGZus{}2}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}lbl} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QLabel}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{centralwidget}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setMinimumSize}\PYG{p}{(}\PYG{n}{QtCore}\PYG{o}{.}\PYG{n}{QSize}\PYG{p}{(}\PYG{l+m+mi}{400}\PYG{p}{,} \PYG{l+m+mi}{240}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setAlignment}\PYG{p}{(}\PYG{n}{QtCore}\PYG{o}{.}\PYG{n}{Qt}\PYG{o}{.}\PYG{n}{AlignCenter}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}voice\PYGZus{}lbl\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{verticalLayout}\PYG{o}{.}\PYG{n}{addWidget}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voice\PYGZus{}lbl}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{horizontalLayout}\PYG{o}{.}\PYG{n}{addLayout}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{verticalLayout}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{verticalLayout\PYGZus{}4}\PYG{o}{.}\PYG{n}{addLayout}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{horizontalLayout}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{h\PYGZus{}btn\PYGZus{}lay} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QHBoxLayout}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{h\PYGZus{}btn\PYGZus{}lay}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}h\PYGZus{}btn\PYGZus{}lay\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{initButton} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QPushButton}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{centralwidget}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{initButton}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}initButton\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{h\PYGZus{}btn\PYGZus{}lay}\PYG{o}{.}\PYG{n}{addWidget}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{initButton}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{pushButton} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QPushButton}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{centralwidget}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{pushButton}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}pushButton\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{h\PYGZus{}btn\PYGZus{}lay}\PYG{o}{.}\PYG{n}{addWidget}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{pushButton}\PYG{p}{)}
+        \PYG{n}{spacerItem6} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QSpacerItem}\PYG{p}{(}\PYG{l+m+mi}{40}\PYG{p}{,} \PYG{l+m+mi}{20}\PYG{p}{,} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QSizePolicy}\PYG{o}{.}\PYG{n}{Expanding}\PYG{p}{,} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QSizePolicy}\PYG{o}{.}\PYG{n}{Minimum}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{h\PYGZus{}btn\PYGZus{}lay}\PYG{o}{.}\PYG{n}{addItem}\PYG{p}{(}\PYG{n}{spacerItem6}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{label} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QLabel}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{centralwidget}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{label}\PYG{o}{.}\PYG{n}{setAlignment}\PYG{p}{(}\PYG{n}{QtCore}\PYG{o}{.}\PYG{n}{Qt}\PYG{o}{.}\PYG{n}{AlignRight}\PYG{o}{|}\PYG{n}{QtCore}\PYG{o}{.}\PYG{n}{Qt}\PYG{o}{.}\PYG{n}{AlignTrailing}\PYG{o}{|}\PYG{n}{QtCore}\PYG{o}{.}\PYG{n}{Qt}\PYG{o}{.}\PYG{n}{AlignVCenter}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{label}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}label\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{h\PYGZus{}btn\PYGZus{}lay}\PYG{o}{.}\PYG{n}{addWidget}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{label}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{lineEdit} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QLineEdit}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{centralwidget}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{lineEdit}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}lineEdit\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{h\PYGZus{}btn\PYGZus{}lay}\PYG{o}{.}\PYG{n}{addWidget}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{lineEdit}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{startButton} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QPushButton}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{centralwidget}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{startButton}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}startButton\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{h\PYGZus{}btn\PYGZus{}lay}\PYG{o}{.}\PYG{n}{addWidget}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{startButton}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{endButton} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QPushButton}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{centralwidget}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{endButton}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}endButton\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{h\PYGZus{}btn\PYGZus{}lay}\PYG{o}{.}\PYG{n}{addWidget}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{endButton}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{shotButton} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QPushButton}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{centralwidget}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{shotButton}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}shotButton\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{h\PYGZus{}btn\PYGZus{}lay}\PYG{o}{.}\PYG{n}{addWidget}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{shotButton}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{verticalLayout\PYGZus{}4}\PYG{o}{.}\PYG{n}{addLayout}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{h\PYGZus{}btn\PYGZus{}lay}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{v\PYGZus{}filters\PYGZus{}lay} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QVBoxLayout}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{v\PYGZus{}filters\PYGZus{}lay}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}v\PYGZus{}filters\PYGZus{}lay\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{verticalLayout\PYGZus{}4}\PYG{o}{.}\PYG{n}{addLayout}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{v\PYGZus{}filters\PYGZus{}lay}\PYG{p}{)}
+        \PYG{n}{MainWindow}\PYG{o}{.}\PYG{n}{setCentralWidget}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{centralwidget}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menubar} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QMenuBar}\PYG{p}{(}\PYG{n}{MainWindow}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menubar}\PYG{o}{.}\PYG{n}{setGeometry}\PYG{p}{(}\PYG{n}{QtCore}\PYG{o}{.}\PYG{n}{QRect}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{,} \PYG{l+m+mi}{1035}\PYG{p}{,} \PYG{l+m+mi}{23}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menubar}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}menubar\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menuHelp} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QMenu}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menubar}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menuHelp}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}menuHelp\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menu} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QMenu}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menubar}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menu}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}menu\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menu\PYGZus{}2} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QMenu}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menubar}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menu\PYGZus{}2}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}menu\PYGZus{}2\PYGZdq{}}\PYG{p}{)}
+        \PYG{n}{MainWindow}\PYG{o}{.}\PYG{n}{setMenuBar}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menubar}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QStatusBar}\PYG{p}{(}\PYG{n}{MainWindow}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{setMinimumSize}\PYG{p}{(}\PYG{n}{QtCore}\PYG{o}{.}\PYG{n}{QSize}\PYG{p}{(}\PYG{l+m+mi}{500}\PYG{p}{,} \PYG{l+m+mi}{30}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}statusbar\PYGZdq{}}\PYG{p}{)}
+        \PYG{n}{MainWindow}\PYG{o}{.}\PYG{n}{setStatusBar}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{statusbar}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionOpen\PYGZus{}image} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QAction}\PYG{p}{(}\PYG{n}{MainWindow}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionOpen\PYGZus{}image}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}actionOpen\PYGZus{}image\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionSave\PYGZus{}original\PYGZus{}image} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QAction}\PYG{p}{(}\PYG{n}{MainWindow}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionSave\PYGZus{}original\PYGZus{}image}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}actionSave\PYGZus{}original\PYGZus{}image\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionSave\PYGZus{}processed\PYGZus{}image} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QAction}\PYG{p}{(}\PYG{n}{MainWindow}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionSave\PYGZus{}processed\PYGZus{}image}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}actionSave\PYGZus{}processed\PYGZus{}image\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionExit} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QAction}\PYG{p}{(}\PYG{n}{MainWindow}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionExit}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}actionExit\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionLicense} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QAction}\PYG{p}{(}\PYG{n}{MainWindow}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionLicense}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}actionLicense\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionAbout} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QAction}\PYG{p}{(}\PYG{n}{MainWindow}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionAbout}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}actionAbout\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionmanual} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QAction}\PYG{p}{(}\PYG{n}{MainWindow}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionmanual}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}actionmanual\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{action12} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QAction}\PYG{p}{(}\PYG{n}{MainWindow}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{action12}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}action12\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionse} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QAction}\PYG{p}{(}\PYG{n}{MainWindow}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionse}\PYG{o}{.}\PYG{n}{setObjectName}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}actionse\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menuHelp}\PYG{o}{.}\PYG{n}{addAction}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionmanual}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menuHelp}\PYG{o}{.}\PYG{n}{addAction}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionAbout}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menu\PYGZus{}2}\PYG{o}{.}\PYG{n}{addAction}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{action12}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menu\PYGZus{}2}\PYG{o}{.}\PYG{n}{addAction}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionse}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menubar}\PYG{o}{.}\PYG{n}{addAction}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menu}\PYG{o}{.}\PYG{n}{menuAction}\PYG{p}{())}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menubar}\PYG{o}{.}\PYG{n}{addAction}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menu\PYGZus{}2}\PYG{o}{.}\PYG{n}{menuAction}\PYG{p}{())}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menubar}\PYG{o}{.}\PYG{n}{addAction}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menuHelp}\PYG{o}{.}\PYG{n}{menuAction}\PYG{p}{())}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{retranslateUi}\PYG{p}{(}\PYG{n}{MainWindow}\PYG{p}{)}
+        \PYG{n}{QtCore}\PYG{o}{.}\PYG{n}{QMetaObject}\PYG{o}{.}\PYG{n}{connectSlotsByName}\PYG{p}{(}\PYG{n}{MainWindow}\PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{retranslateUi}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{MainWindow}\PYG{p}{):}
+        \PYG{n}{\PYGZus{}translate} \PYG{o}{=} \PYG{n}{QtCore}\PYG{o}{.}\PYG{n}{QCoreApplication}\PYG{o}{.}\PYG{n}{translate}
+        \PYG{n}{MainWindow}\PYG{o}{.}\PYG{n}{setWindowTitle}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}肢体表型特征采集系统\PYGZhy{}\PYGZhy{}\PYGZhy{}山东省精神卫生中心\PYGZdq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{original\PYGZus{}name\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}原始图像\PYGZdq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{processed\PYGZus{}name\PYGZus{}lbl}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}肢体特征\PYGZdq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{label\PYGZus{}3}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}标记图像\PYGZdq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{label\PYGZus{}2}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}肢体轮廓\PYGZdq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{initButton}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}检测视频设备\PYGZdq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{pushButton}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}停用视频设备\PYGZdq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{label}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}样本编号：\PYGZdq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{startButton}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}开始录制\PYGZdq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{endButton}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}结束录制\PYGZdq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{shotButton}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}进程中止\PYGZdq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menuHelp}\PYG{o}{.}\PYG{n}{setTitle}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}帮助\PYGZdq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menu}\PYG{o}{.}\PYG{n}{setTitle}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}文件\PYGZdq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{menu\PYGZus{}2}\PYG{o}{.}\PYG{n}{setTitle}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}设置\PYGZdq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionOpen\PYGZus{}image}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}Open image\PYGZdq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionSave\PYGZus{}original\PYGZus{}image}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}Save original image\PYGZdq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionSave\PYGZus{}processed\PYGZus{}image}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}Save processed image\PYGZdq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionExit}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}Exit\PYGZdq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionLicense}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}License\PYGZdq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionAbout}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}关于\PYGZdq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionmanual}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}操作说明\PYGZdq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{action12}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}设备选择\PYGZdq{}}\PYG{p}{))}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{actionse}\PYG{o}{.}\PYG{n}{setText}\PYG{p}{(}\PYG{n}{\PYGZus{}translate}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}MainWindow\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}文件设置\PYGZdq{}}\PYG{p}{))}
+\end{Verbatim}

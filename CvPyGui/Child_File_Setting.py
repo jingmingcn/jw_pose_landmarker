@@ -26,7 +26,7 @@ class child_file_setting(QWidget,Ui_ChildWindow_2):
         else:
             self.radioButton_mp3.setChecked(True)
     def msg(self):
-        m = QtWidgets.QFileDialog.getExistingDirectory(None, "选取文件夹", "C:/")  # 起始路径
+        m = QtWidgets.QFileDialog.getExistingDirectory(None, "选取文件夹", "record")  # 起始路径
         with open("config/db.json","r",encoding='UTF-8') as file_r:
             savepath = json.load(file_r)
         #原路径保存至former_save_path

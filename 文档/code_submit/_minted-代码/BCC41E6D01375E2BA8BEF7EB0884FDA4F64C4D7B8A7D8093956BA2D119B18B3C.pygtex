@@ -27,7 +27,7 @@
         \PYG{k}{else}\PYG{p}{:}
             \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{radioButton\PYGZus{}mp3}\PYG{o}{.}\PYG{n}{setChecked}\PYG{p}{(}\PYG{k+kc}{True}\PYG{p}{)}
     \PYG{k}{def} \PYG{n+nf}{msg}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
-        \PYG{n}{m} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QFileDialog}\PYG{o}{.}\PYG{n}{getExistingDirectory}\PYG{p}{(}\PYG{k+kc}{None}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}选取文件夹\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}C:/\PYGZdq{}}\PYG{p}{)}  \PYG{c+c1}{\PYGZsh{} 起始路径}
+        \PYG{n}{m} \PYG{o}{=} \PYG{n}{QtWidgets}\PYG{o}{.}\PYG{n}{QFileDialog}\PYG{o}{.}\PYG{n}{getExistingDirectory}\PYG{p}{(}\PYG{k+kc}{None}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}选取文件夹\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}record\PYGZdq{}}\PYG{p}{)}  \PYG{c+c1}{\PYGZsh{} 起始路径}
         \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}config/db.json\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}r\PYGZdq{}}\PYG{p}{,}\PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}UTF\PYGZhy{}8\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{file\PYGZus{}r}\PYG{p}{:}
             \PYG{n}{savepath} \PYG{o}{=} \PYG{n}{json}\PYG{o}{.}\PYG{n}{load}\PYG{p}{(}\PYG{n}{file\PYGZus{}r}\PYG{p}{)}
         \PYG{c+c1}{\PYGZsh{}原路径保存至former\PYGZus{}save\PYGZus{}path}
